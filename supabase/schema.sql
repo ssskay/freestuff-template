@@ -14,11 +14,11 @@ create table if not exists resources (
   name text not null,
   description text not null,
   url text not null,
+  -- <category-check:start> GENERATED from CATEGORIES in src/site.config.ts — run `npm run gen:schema`
   category text not null check (category in (
-    'software', 'news', 'library', 'outdoor', 'money', 'health',
-    'career', 'campus-life', 'alumni-only', 'tuck', 'transportation',
-    'off-campus'
+    'software', 'news', 'library', 'outdoor', 'money', 'health', 'career', 'campus-life', 'alumni-only', 'tuck', 'transportation', 'off-campus'
   )),
+  -- <category-check:end>
   eligibility text[] not null default '{}',
   last_verified date not null default current_date,
   notes text,
