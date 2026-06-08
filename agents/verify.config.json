@@ -1,0 +1,11 @@
+{
+  "school": "Dartmouth",
+  "user_agent": "Dartmouth-Verifier/1.0 (freestuff-dartmouth; link verification)",
+  "recovery_domains": [
+    "library.dartmouth.edu",
+    "services.dartmouth.edu",
+    "alumni.dartmouth.edu",
+    "outdoors.dartmouth.edu",
+    "students.dartmouth.edu"
+  ]
+}

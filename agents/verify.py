@@ -13,13 +13,18 @@ from typing import Dict, List, Any
 import requests
 from anthropic import Anthropic
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from verify_config import load_config, build_domain_map
+
 # Configuration
 RESOURCES_PATH = "src/content/resources.json"
 REPORT_PATH = "verification-report.md"
 METRICS_DIR = "agents/metrics"
 MODEL = "claude-sonnet-4-5-20250929"
 TIMEOUT = 10  # seconds
-USER_AGENT = "Dartmouth-Verifier/1.0 (freestuff-dartmouth; link verification)"
+_CONFIG = load_config()
+USER_AGENT = _CONFIG["user_agent"]
+SCHOOL = _CONFIG["school"]
 
 # Sonnet 4.5 list price, USD per 1M tokens (update if pricing changes).
 PRICE_INPUT_PER_MTOK = 3.0
@@ -104,7 +109,7 @@ Resource entry:
 - Name: {resource['name']}
 - Description: {resource['description']}
 - Category: {resource['category']}
-- Expected content: A page about "{resource['name']}" for Dartmouth {', '.join(resource['eligibility'])}
+- Expected content: A page about "{resource['name']}" for {SCHOOL} {', '.join(resource['eligibility'])}
 
 Page content (first 10k chars):
 {page_content}
@@ -154,13 +159,7 @@ def find_replacement_url(resource: Dict[str, Any]) -> str | None:
     log(f"  Searching for replacement URL...")
 
     # Extract likely subdomain from source
-    domain_map = {
-        "library.dartmouth.edu": "library.dartmouth.edu",
-        "services.dartmouth.edu": "services.dartmouth.edu",
-        "alumni.dartmouth.edu": "alumni.dartmouth.edu",
-        "outdoors.dartmouth.edu": "outdoors.dartmouth.edu",
-        "students.dartmouth.edu": "students.dartmouth.edu",
-    }
+    domain_map = build_domain_map(_CONFIG)
 
     search_domain = None
     for domain in domain_map.values():
