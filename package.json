@@ -13,7 +13,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "astro check",
-    "gen:schema": "tsx scripts/gen-schema-check.mts"
+    "gen:schema": "tsx scripts/gen-schema-check.mts",
+    "og": "tsx scripts/gen-og.mts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.106.2",
