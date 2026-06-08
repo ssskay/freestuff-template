@@ -16,7 +16,7 @@ surface is a small set of **pack files**; everything else is the shared engine.
 | `public/og.png` | social card (generated: `npm run og`) |
 | `src/site.config.ts` | name/branding, categories, collections, scenarios |
 | `agents/verify.config.json` | verifier school + domains + UA |
-| anchor constant in `src/pages/map.astro` | map center |
+| `GREEN` constant in `src/pages/map.astro` | map center |
 
 ## Generators
 - `npm run gen:schema` — regenerate the DB category CHECK from `CATEGORIES`.

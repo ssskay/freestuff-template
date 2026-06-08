@@ -11,7 +11,7 @@ This is a GitHub template. To stand up a site for your school:
    - `public/tokens.css` `--color-accent` — your brand color (see recipe-colors).
    - `src/site.config.ts` — `SITE`, categories, collections, scenarios.
    - `agents/verify.config.json` — your school name + domains (see recipe-verifier).
-   - the map anchor constant in `src/pages/map.astro`.
+   - the map anchor constant `GREEN` in `src/pages/map.astro` (the campus center; rename freely).
 4. Run the generators: `npm run gen:schema` (DB constraint) and `npm run og` (social card).
 5. Apply `supabase/schema.sql` in the Supabase SQL editor, then `npm run seed`.
 6. `npm run test && npm run typecheck && npm run build`, then deploy.
