@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { CATEGORIES } from '../../src/site.config';
-import { renderCategoryCheck } from '../../scripts/gen-schema-check.mts';
+import { renderCategoryCheck, CATEGORY_CHECK_RE } from '../../scripts/gen-schema-check.mts';
 
 const schemaPath = fileURLToPath(new URL('../../supabase/schema.sql', import.meta.url));
 
@@ -16,8 +16,9 @@ describe('gen-schema-check', () => {
 
   it('the committed schema.sql matches the generated block (no drift)', () => {
     const schema = readFileSync(schemaPath, 'utf8');
-    const re = /[ \t]*-- <category-check:start>[\s\S]*?-- <category-check:end>/;
-    const current = schema.match(re)![0];
+    const match = schema.match(CATEGORY_CHECK_RE);
+    expect(match, 'category-check markers not found in schema.sql').not.toBeNull();
+    const current = match![0];
     expect(current.trimEnd()).toBe(renderCategoryCheck([...CATEGORIES]).trimEnd());
   });
 });
