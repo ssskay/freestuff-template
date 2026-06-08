@@ -1,0 +1,197 @@
+---
+interface Props {
+  source?: string;
+}
+const { source = 'home' } = Astro.props;
+---
+
+<section class="newsletter" aria-labelledby="newsletter-heading">
+  <div class="newsletter-inner">
+    <div class="newsletter-copy">
+      <h2 id="newsletter-heading" class="newsletter-title">Get new perks in your inbox</h2>
+      <p class="newsletter-deck">
+        An occasional email when fresh free stuff is added or a perk changes. No spam, no ads,
+        unsubscribe anytime.
+      </p>
+    </div>
+    <form id="newsletter-form" class="newsletter-form" data-source={source}>
+      <label for="newsletter-email" class="sr-only">Email address</label>
+      <input
+        type="email"
+        id="newsletter-email"
+        name="email"
+        class="newsletter-input"
+        placeholder="you@dartmouth.edu"
+        autocomplete="email"
+        required
+      />
+      <button type="submit" class="newsletter-btn" id="newsletter-btn">Notify me</button>
+    </form>
+    <p id="newsletter-status" class="newsletter-status" role="status" aria-live="polite"></p>
+    <p class="newsletter-fineprint">
+      We store your email only to send this newsletter — see our
+      <a href="/privacy" class="newsletter-link">Privacy Policy</a>.
+    </p>
+  </div>
+</section>
+
+<style>
+  .newsletter {
+    max-width: 90rem;
+    margin: 0 auto var(--space-3xl);
+    padding: 0 var(--space-lg);
+  }
+
+  .newsletter-inner {
+    max-width: var(--measure);
+    margin: 0 auto;
+    padding: var(--space-xl);
+    background: var(--color-paper-2);
+    border: var(--rule-thin) solid var(--color-border);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .newsletter-title {
+    margin: 0 0 var(--space-2xs) 0;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--text-2xl);
+    font-weight: 600;
+    line-height: var(--leading-snug);
+    color: var(--color-ink);
+  }
+
+  .newsletter-deck {
+    margin: 0;
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-ink-muted);
+  }
+
+  .newsletter-form {
+    display: flex;
+    gap: var(--space-xs);
+    flex-wrap: wrap;
+  }
+
+  .newsletter-input {
+    flex: 1;
+    min-width: 12rem;
+    padding: var(--space-sm) var(--space-md);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    color: var(--color-ink);
+    background: var(--color-paper);
+    border: var(--rule-thin) solid var(--color-border-input);
+    border-radius: var(--radius-md);
+    transition: border-color var(--dur-fast) var(--ease-out),
+                box-shadow var(--dur-fast) var(--ease-out);
+  }
+
+  .newsletter-input:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-accent-subtle);
+  }
+
+  .newsletter-btn {
+    padding: var(--space-sm) var(--space-lg);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--color-paper);
+    background: var(--color-accent);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-out);
+    white-space: nowrap;
+  }
+
+  .newsletter-btn:hover {
+    background: var(--color-accent-hover);
+  }
+
+  .newsletter-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .newsletter-status {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    min-height: 1.2em;
+  }
+
+  .newsletter-status:empty {
+    min-height: 0;
+  }
+
+  .newsletter-fineprint {
+    margin: 0;
+    font-size: var(--text-xs);
+    color: var(--color-ink-subtle);
+  }
+
+  .newsletter-link {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .newsletter {
+      padding: 0 var(--space-md);
+      margin-bottom: var(--space-2xl);
+    }
+
+    .newsletter-inner {
+      padding: var(--space-lg);
+    }
+
+    .newsletter-btn {
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  import { subscribeEmail } from '../lib/supabase';
+
+  const form = document.getElementById('newsletter-form') as HTMLFormElement | null;
+  const input = document.getElementById('newsletter-email') as HTMLInputElement | null;
+  const btn = document.getElementById('newsletter-btn') as HTMLButtonElement | null;
+  const status = document.getElementById('newsletter-status') as HTMLParagraphElement | null;
+
+  if (form && input && btn && status) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = input.value.trim();
+      const source = form.dataset.source || 'home';
+
+      btn.disabled = true;
+      const original = btn.textContent;
+      btn.textContent = 'Signing up…';
+      status.style.color = '';
+
+      try {
+        const result = await subscribeEmail(email, source);
+        if (result.success) {
+          status.textContent = 'You\'re on the list. 🌲';
+          form.reset();
+        } else {
+          status.style.color = 'oklch(45% 0.15 25)';
+          status.textContent = result.error || 'Something went wrong. Please try again.';
+        }
+      } catch {
+        status.style.color = 'oklch(45% 0.15 25)';
+        status.textContent = 'Something went wrong. Please try again.';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = original;
+      }
+    });
+  }
+</script>

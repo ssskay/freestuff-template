@@ -1,0 +1,259 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { loadStaticResources } from '../lib/catalog';
+import { buildMapData } from '../lib/map-data';
+import { categoryLabel } from '../site.config';
+import buildingFootprints from '../content/building-footprints.json';
+
+const resources = await loadStaticResources();
+const mapData = buildMapData(resources);
+
+// Group the Green's resources by category for the readable text list.
+const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
+  .sort()
+  .map((cat) => ({
+    label: categoryLabel(cat),
+    resources: mapData.green.filter((r) => r.category === cat),
+  }));
+---
+
+<BaseLayout
+  title="Map | Free Stuff @ Dartmouth"
+  description="The campus is your backyard. An interactive map of free and affordable things to do around Dartmouth — and everything you can access from the Green."
+>
+  <div class="map-page">
+    <div class="map-hero">
+      <h1 class="page-title">The campus is your backyard</h1>
+      <p class="page-deck">
+        Free movies, makerspaces, museums, gyms, the river, the free bus — and from a bench
+        on the Green, every online resource Dartmouth gives you. Get out there.
+      </p>
+    </div>
+
+    <div class="map-layout">
+      <!-- Leaflet mounts here; hidden from assistive tech, which uses the list below.
+           Pin clicks open a Leaflet popup anchored at the pin (auto-pans into view). -->
+      <div id="map" class="map-canvas" role="presentation" aria-hidden="true"></div>
+    </div>
+
+    <!-- Accessible, no-JS baseline: every place and the full Green set, as real links. -->
+    <section class="map-list" aria-label="All places on the map">
+      <h2 class="map-list-title">Places on campus</h2>
+      <ul class="place-list">
+        {mapData.places.map((p) => (
+          <li class="place-item">
+            <button type="button" class="place-button" data-place={p.place}>{p.place}</button>
+            <ul class="place-resources">
+              {p.resources.map((r) => (
+                <li><a href={r.url} class="resource-link">{r.name}</a></li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ul>
+
+      <h2 class="map-list-title">From the Green — online &amp; access-anywhere</h2>
+      <p class="green-blurb">
+        Grab the free campus WiFi, sit on the grass, and from right here you have all of this:
+      </p>
+      {greenByCategory.map((g) => (
+        <div class="green-group">
+          <h3 class="green-group-title">{g.label}</h3>
+          <ul class="place-resources">
+            {g.resources.map((r) => (
+              <li><a href={r.url} class="resource-link">{r.name}</a></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </section>
+
+    <div class="cta-section">
+      <p class="cta-text">Want the full searchable list?</p>
+      <a href="/" class="cta-button">Browse all {resources.length} resources</a>
+    </div>
+  </div>
+
+  <!-- Map data for the client island. -->
+  <script is:inline type="application/json" id="map-data" set:html={JSON.stringify(mapData)}></script>
+  <!-- Real OSM building footprints, softly tinted under the pins to show which
+       buildings these resources live in (see /tmp fetch in commit history). -->
+  <script is:inline type="application/json" id="map-footprints" set:html={JSON.stringify(buildingFootprints)}></script>
+
+  <script>
+    import L from 'leaflet';
+    import 'leaflet/dist/leaflet.css';
+
+    type MapResource = { id: string; name: string; category: string; url: string; annual_value: number | null };
+    type MapPlace = { place: string; lat: number; lng: number; resources: MapResource[] };
+    type MapData = { places: MapPlace[]; green: MapResource[] };
+
+    const GREEN: [number, number] = [43.7033, -72.2886];
+
+    function readData(): MapData | null {
+      const el = document.getElementById('map-data');
+      if (!el?.textContent) return null;
+      try { return JSON.parse(el.textContent) as MapData; } catch { return null; }
+    }
+
+    // Escape catalog text before injecting it into popup HTML (names contain '&').
+    function esc(s: string): string {
+      return s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c] as string);
+    }
+
+    function listHtml(resources: MapResource[]): string {
+      return `<ul class="pc-list">${resources
+        .map((r) => {
+          // The map answers "where are the free resources?" — not "what do they cost?".
+          // Showing a per-year dollar figure reads like a price tag, so omit it here.
+          return `<li class="pc-item"><a class="pc-link" href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.name)}</a></li>`;
+        })
+        .join('')}</ul>`;
+    }
+
+    function placeHtml(p: MapPlace): string {
+      return `<div class="pc"><h3 class="pc-title">${esc(p.place)}</h3>${listHtml(p.resources)}</div>`;
+    }
+
+    function greenHtml(green: MapResource[]): string {
+      return (
+        `<div class="pc"><h3 class="pc-title">From the Green</h3>` +
+        `<p class="pc-lead">Grab the free campus WiFi, sit on the grass, and from right here you have access to all of this.</p>` +
+        `${listHtml(green)}</div>`
+      );
+    }
+
+    function init(): void {
+      const data = readData();
+      const el = document.getElementById('map');
+      if (!data || !el) return;
+
+      const map = L.map(el, { scrollWheelZoom: false }).setView(GREEN, 15);
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        maxZoom: 19,
+      }).addTo(map);
+
+      // Softly tint the real building footprints under the pins so the map shows
+      // which buildings hold these resources — turning empty white space into
+      // signal. Styled via the .building-fp class (CSS owns the brand color and
+      // opacity); markers live in a higher pane, so pins always sit on top.
+      const fpEl = document.getElementById('map-footprints');
+      if (fpEl?.textContent) {
+        try {
+          map.createPane('footprints').style.zIndex = '350'; // above tiles, below markers
+          L.geoJSON(JSON.parse(fpEl.textContent), {
+            pane: 'footprints',
+            interactive: false,
+            style: () => ({ className: 'building-fp', weight: 1.5 }),
+          }).addTo(map);
+        } catch { /* footprints are decorative — skip silently if they fail to parse */ }
+      }
+
+      const placeIcon = L.divIcon({ className: 'pin pin-place', html: '<span></span>', iconSize: [26, 26], iconAnchor: [13, 13], popupAnchor: [0, -12] });
+      const greenIcon = L.divIcon({ className: 'pin pin-green', html: '<span>WiFi</span>', iconSize: [50, 50], iconAnchor: [25, 25], popupAnchor: [0, -22] });
+      const popupOpts: L.PopupOptions = { maxHeight: 260, minWidth: 220, maxWidth: 300, className: 'map-popup' };
+
+      // Popups open AT the pin and auto-pan into view — feedback lands where you
+      // clicked, instead of in a corner panel far from a wide map's center.
+      // keyboard:false — the map is aria-hidden, so focusable pins would be
+      // tab-stops that announce nothing (WCAG "focusable but hidden"). The
+      // accessible text list below is the canonical keyboard/screen-reader path.
+      const byPlace = new Map<string, L.Marker>();
+      for (const p of data.places) {
+        const m = L.marker([p.lat, p.lng], { icon: placeIcon, keyboard: false, title: p.place, alt: p.place })
+          .addTo(map)
+          .bindPopup(placeHtml(p), popupOpts);
+        byPlace.set(p.place, m);
+      }
+
+      L.marker(GREEN, { icon: greenIcon, keyboard: false, title: 'The Green', alt: 'The Dartmouth Green' })
+        .addTo(map)
+        .bindPopup(greenHtml(data.green), popupOpts);
+
+      // Frame the view on the pinned campus core, not the empty outskirts — the
+      // fixed zoom-15 left every pin in a tiny central cluster. fitBounds picks
+      // the closest zoom that still shows every pin, adapting to any viewport.
+      const pinPoints: [number, number][] = data.places.map((p) => [p.lat, p.lng]);
+      pinPoints.push(GREEN);
+      const bounds = L.latLngBounds(pinPoints);
+      const fitOpts: L.FitBoundsOptions = { padding: [36, 36], maxZoom: 17 };
+      map.fitBounds(bounds, fitOpts);
+      // fitBounds floors to the zoom that frames every pin with slack to spare,
+      // which reads as too much empty margin on a wide desktop frame. Tighten one
+      // notch to fill it — but only keep that if every pin still fits, since a
+      // narrow/short phone viewport crops the campus spread (Ledyard to athletics)
+      // at +1. Self-correcting: desktop gets the tighter frame, mobile keeps all pins.
+      map.setZoom(Math.min(map.getZoom() + 1, 17), { animate: false });
+      if (!pinPoints.every((pt) => map.getBounds().contains(pt))) {
+        map.fitBounds(bounds, fitOpts);
+      }
+
+      // The accessible text-list buttons pan to and open the matching pin's popup.
+      document.querySelectorAll<HTMLButtonElement>('.place-button').forEach((btn) => {
+        const m = btn.dataset.place ? byPlace.get(btn.dataset.place) : undefined;
+        if (!m) return;
+        btn.addEventListener('click', () => {
+          map.setView(m.getLatLng(), 16);
+          m.openPopup();
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  </script>
+
+  <style>
+    .map-page { max-width: 90rem; margin: 0 auto; padding: var(--space-3xl) var(--space-lg) var(--space-2xl); }
+    .map-hero { max-width: var(--measure); margin: 0 auto var(--space-2xl); text-align: center; }
+    .page-title { font-family: var(--font-display); font-style: italic; font-size: var(--text-display); font-weight: 600; line-height: var(--leading-tight); color: var(--color-ink); margin: 0 0 var(--space-md) 0; }
+    .page-deck { font-size: var(--text-lg); line-height: var(--leading-relaxed); color: var(--color-ink-muted); margin: 0; }
+    .map-layout { position: relative; }
+    /* Cap the width: a full-90rem map is so wide that even a tight zoom leaves
+       empty outskirts on the sides. A centered ~60rem frame keeps it on campus. */
+    .map-canvas { width: 100%; max-width: 60rem; height: 32rem; border-radius: var(--radius-lg, 12px); background: var(--color-paper-2); margin: 0 auto var(--space-2xl); }
+    .map-list { max-width: var(--measure); margin: 0 auto; }
+    .map-list-title { font-family: var(--font-display); font-size: var(--text-xl); color: var(--color-ink); margin: var(--space-2xl) 0 var(--space-md); }
+    .place-list { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-lg); }
+    .place-button { font: inherit; font-weight: 600; color: var(--color-ink); background: none; border: none; padding: 0; cursor: pointer; text-align: left; }
+    .place-button:hover { text-decoration: underline; }
+    .place-resources { margin: var(--space-xs) 0 0; padding-left: var(--space-lg); }
+    .resource-link { color: var(--color-accent); }
+    .green-blurb { color: var(--color-ink-muted); margin: 0 0 var(--space-md); }
+    .green-group-title { font-size: var(--text-sm); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink-muted); margin: var(--space-md) 0 var(--space-xs); }
+    .cta-section { text-align: center; margin-top: var(--space-2xl); }
+    .cta-text { color: var(--color-ink-muted); margin: 0 0 var(--space-sm); }
+    /* Pins — large enough to see and tap on a clustered campus. The whole icon
+       box is the click target; the visible circle sits centered inside it. */
+    :global(.pin-place span) { display: block; width: 20px; height: 20px; border-radius: 50%; background: var(--color-accent); border: 3px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.4); transition: transform 0.12s ease; cursor: pointer; }
+    :global(.pin-place:hover span), :global(.pin-place:focus span) { transform: scale(1.25); }
+    :global(.pin-green) { display: grid; place-items: center; cursor: pointer; }
+    :global(.pin-green span) { display: grid; place-items: center; width: 50px; height: 50px; border-radius: 50%; background: var(--color-accent); color: #fff; font-size: 12px; font-weight: 700; border: 3px solid #fff; box-shadow: 0 3px 10px rgba(0,0,0,0.4); }
+    /* Real OSM building footprints, softly tinted in the brand green so the
+       applicable buildings read as "here" without competing with the pins. */
+    :global(.building-fp) { fill: var(--color-accent); fill-opacity: 0.16; stroke: var(--color-accent); stroke-opacity: 0.5; }
+
+    /* Popup content is injected by Leaflet (outside Astro's scope) — style globally. */
+    :global(.map-popup .leaflet-popup-content-wrapper) { border-radius: var(--radius-lg, 12px); box-shadow: 0 8px 30px rgba(0,0,0,0.18); }
+    :global(.map-popup .leaflet-popup-content) { margin: var(--space-md); }
+    :global(.map-popup .pc-title) { font-family: var(--font-display); font-size: var(--text-lg); color: var(--color-ink); margin: 0 0 var(--space-xs); }
+    :global(.map-popup .pc-lead) { color: var(--color-ink-muted); font-size: var(--text-sm); margin: 0 0 var(--space-sm); }
+    :global(.map-popup .pc-list) { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-sm); }
+    :global(.map-popup .pc-item) { display: flex; justify-content: space-between; gap: var(--space-sm); align-items: baseline; }
+    :global(.map-popup .pc-link) { color: var(--color-accent); font-weight: 600; }
+    @media (max-width: 768px) {
+      /* The map is the point of this page — let it dominate the phone screen
+         instead of sitting below a full-height hero. Shrink the hero, then give
+         the map most of the viewport so you land on pins, not a wall of text. */
+      .map-page { padding: var(--space-xl) var(--space-md) var(--space-2xl); }
+      .map-hero { margin-bottom: var(--space-lg); }
+      .page-title { font-size: var(--text-3xl); }
+      .page-deck { font-size: var(--text-base); }
+      .map-canvas { height: 68vh; min-height: 26rem; margin-bottom: var(--space-xl); }
+    }
+  </style>
+</BaseLayout>

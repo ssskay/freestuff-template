@@ -1,0 +1,181 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../site.config';
+
+const lastUpdated = 'June 3, 2026';
+---
+
+<BaseLayout title="Terms of Use | Free Stuff @ Dartmouth" description="Terms of use for the Free Stuff @ Dartmouth catalog.">
+  <article class="doc-page">
+    <h1 class="doc-title">Terms of Use</h1>
+    <p class="doc-meta">Last updated {lastUpdated}</p>
+
+    <div class="doc-content">
+      <section class="doc-section">
+        <h2 class="section-head">Independent project</h2>
+        <p>
+          Free Stuff @ Dartmouth is an independent, community-maintained catalog. It is <strong>not</strong>
+          affiliated with, endorsed by, or operated by Dartmouth College. "Dartmouth" is referenced only to
+          describe who the listed perks are for. Always confirm eligibility and access details on the official
+          Dartmouth page each entry links to.
+        </p>
+      </section>
+
+      <section class="doc-section">
+        <h2 class="section-head">Informational only — no guarantee</h2>
+        <p>
+          We work to keep entries accurate and add a "last verified" date to each one, but perks change,
+          eligibility rules vary, and links can break. The catalog is provided "as is," without warranty of any
+          kind. We don't guarantee that any listed resource is currently available to you, and we're not
+          responsible for what happens on the third-party sites we link to.
+        </p>
+      </section>
+
+      <section class="doc-section">
+        <h2 class="section-head">Community submissions</h2>
+        <p>
+          If you submit a resource, you confirm the information is accurate to the best of your knowledge and
+          that you have the right to share it, and you give us permission to publish, edit, or remove it.
+          Submissions are reviewed before going live. Don't submit spam, private information, or content that
+          isn't a genuine Dartmouth-affiliated free perk.
+        </p>
+      </section>
+
+      <section class="doc-section">
+        <h2 class="section-head">No paid placement</h2>
+        <p>
+          Listings are editorial. No one can pay to be added, ranked higher, or marked "Verified." If the
+          project is ever supported by a sponsor, that support will be clearly labeled and kept separate from
+          the catalog. See our <a href="/privacy" class="inline-link">Privacy Policy</a> for what we collect.
+        </p>
+      </section>
+
+      <section class="doc-section">
+        <h2 class="section-head">Open source</h2>
+        <p>
+          The source code is available on
+          <a href={SITE.github} class="inline-link">GitHub</a> under its
+          published license. You're welcome to fork it for your own school.
+        </p>
+      </section>
+
+      <section class="doc-section">
+        <h2 class="section-head">Changes & contact</h2>
+        <p>
+          These terms may be updated; the "last updated" date above reflects the current version. Questions?
+          Open an issue on
+          <a href={`${SITE.github}/issues`} class="inline-link">GitHub</a>.
+        </p>
+      </section>
+    </div>
+
+    <div class="back-link-wrapper">
+      <a href="/" class="back-link">← Back to Resources</a>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .doc-page {
+    max-width: var(--measure);
+    margin: 0 auto;
+    padding: var(--space-3xl) var(--space-lg) var(--space-2xl);
+  }
+
+  .doc-title {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--text-5xl);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+    color: var(--color-ink);
+    margin: 0 0 var(--space-2xs) 0;
+  }
+
+  .doc-meta {
+    margin: 0 0 var(--space-2xl) 0;
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .doc-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+  }
+
+  .doc-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .section-head {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--text-2xl);
+    font-weight: 600;
+    line-height: var(--leading-snug);
+    color: var(--color-ink);
+    margin: 0;
+  }
+
+  .doc-section p {
+    margin: 0;
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-ink-muted);
+  }
+
+  .doc-section strong {
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .inline-link {
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+
+  .inline-link:hover {
+    color: var(--color-accent-hover);
+    text-decoration: underline;
+  }
+
+  .back-link-wrapper {
+    margin-top: var(--space-3xl);
+    text-align: center;
+  }
+
+  .back-link {
+    display: inline-block;
+    padding: var(--space-sm) var(--space-lg);
+    font-size: var(--text-base);
+    font-weight: 500;
+    color: var(--color-paper);
+    background: var(--color-accent);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: background var(--dur-fast) var(--ease-out);
+  }
+
+  .back-link:hover {
+    background: var(--color-accent-hover);
+  }
+
+  @media (max-width: 768px) {
+    .doc-page {
+      padding: var(--space-2xl) var(--space-md) var(--space-xl);
+    }
+
+    .doc-title {
+      font-size: var(--text-4xl);
+    }
+
+    .section-head {
+      font-size: var(--text-xl);
+    }
+  }
+</style>

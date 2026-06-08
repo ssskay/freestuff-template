@@ -1,0 +1,970 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ResourceCard from '../components/ResourceCard.astro';
+import { loadResources } from '../lib/catalog';
+import { CURATED_COLLECTIONS, categoryLabel } from '../site.config';
+import ScenarioIcon from '../components/ScenarioIcon.astro';
+import NewsletterSignup from '../components/NewsletterSignup.astro';
+
+// Resolve the catalog (Supabase with static JSON fallback), normalized so that
+// every resource's `id` is its stable slug.
+const resources = await loadResources();
+
+// Get unique categories and eligibility options
+const categories = [...new Set(resources.map(r => r.category))].sort();
+const eligibilityOptions = [...new Set(resources.flatMap(r => r.eligibility))].sort();
+
+// Curated homepage collections, computed from the shared config.
+const categoryGroups = CURATED_COLLECTIONS.map(group => ({
+  key: group.key,
+  label: group.label,
+  resources: resources.filter(group.match),
+}));
+
+// Serialize each collection's member slugs so the client filters by membership
+// (matching data-resource-id) rather than re-deriving by category.
+const categoryGroupIds: Record<string, string[]> = Object.fromEntries(
+  categoryGroups.map(group => [group.key, group.resources.map(r => r.id)])
+);
+
+// Filter hidden gems
+const hiddenGems = resources.filter(r => r.hidden_gem === true);
+
+// Calculate total annual value (annual_value may be null = "not estimated").
+// This is a conservative floor: resources we couldn't price are excluded, so
+// the figure is shown with a "+" rather than implying it's the complete total.
+const totalValue = resources
+  .filter(r => typeof r.annual_value === 'number' && r.annual_value > 0)
+  .reduce((sum, r) => sum + (r.annual_value as number), 0);
+---
+
+<BaseLayout title="Free Stuff @ Dartmouth">
+  <div class="hero-catalogue">
+    <h1 class="hero-title">Your complete catalog of free perks</h1>
+    <p class="hero-deck">
+      Dartmouth students and alumni pay for way more than they use. This is everything you already have access to — <strong>{resources.length} verified resources</strong> across software, news, libraries, outdoor gear, career services, and more.
+    </p>
+
+    <!-- Search -->
+    <label for="search" class="sr-only">Search resources</label>
+    <div class="search-wrapper">
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M12.5 12.5L16 16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <input
+        type="text"
+        id="search"
+        placeholder="Search for Adobe, NYT, gear…"
+        class="search-input"
+        autocomplete="off"
+      />
+    </div>
+    <p class="access-note">Most perks need your Dartmouth NetID login. Each card shows who's eligible.</p>
+
+    <!-- Curated collections (a separate axis from raw categories) -->
+    <div class="collection-chips" role="group" aria-label="Curated collections">
+      <button type="button" class="chip" data-group="" aria-pressed="true">All</button>
+      {categoryGroups.map((group) => (
+        <button type="button" class="chip" data-group={`group:${group.key}`} aria-pressed="false">{group.label}</button>
+      ))}
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-bar">
+      <div class="filter-controls">
+        <div class="filter-group">
+          <label for="category-filter" class="filter-label">Category</label>
+          <select id="category-filter" class="filter-select">
+            <option value="">All categories</option>
+            {categories.map((cat) => (
+              <option value={cat}>{categoryLabel(cat)}</option>
+            ))}
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="eligibility-filter" class="filter-label">Who can use it</label>
+          <select id="eligibility-filter" class="filter-select">
+            <option value="">Anyone</option>
+            {eligibilityOptions.map((elig) => (
+              <option value={elig}>{elig}</option>
+            ))}
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="sort-filter" class="filter-label">Sort by</label>
+          <select id="sort-filter" class="filter-select">
+            <option value="name">Name (A-Z)</option>
+            <option value="popular">Most Popular</option>
+            <option value="value">Highest Value</option>
+            <option value="recent">Recently Added</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="filter-status">
+        <p class="result-count" role="status" aria-live="polite">
+          Showing <span id="result-count">{resources.length}</span>
+        </p>
+        <button id="clear-filters" class="clear-btn">Clear filters</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resource Grid (surfaced directly under search/filters) -->
+  <div id="resource-grid" class="resource-grid">
+    {resources.map((resource) => (
+      <div class="resource-item"
+           data-resource-id={resource.id}
+           data-category={resource.category}
+           data-eligibility={JSON.stringify(resource.eligibility)}
+           data-searchable={JSON.stringify({
+             name: resource.name.toLowerCase(),
+             description: resource.description.toLowerCase(),
+             category: resource.category.toLowerCase(),
+           })}>
+        <ResourceCard resource={resource} />
+      </div>
+    ))}
+  </div>
+
+  <div id="no-results" class="no-results hidden">
+    <p class="no-results-text">No resources found.</p>
+    <p id="no-results-suggestion" class="no-results-suggestion"></p>
+    <button id="clear-filters-alt" class="clear-btn-alt">Clear filters and try again</button>
+  </div>
+
+  <!-- Value strip -->
+  <div class="value-banner">
+    <div class="value-banner-content">
+      <div class="value-amount">${totalValue.toLocaleString()}+</div>
+      <div class="value-label">in free resources you already have access to</div>
+    </div>
+  </div>
+
+  <!-- Scenario-Based Navigation -->
+  <div class="scenarios-section">
+    <div class="scenarios-header">
+      <h2 class="scenarios-title">Not sure where to start? Try these:</h2>
+      <p class="scenarios-deck">Real situations where these perks actually matter</p>
+    </div>
+
+    <div class="scenarios-grid">
+      <a href="/scenarios/grad-school" class="scenario-card">
+        <div class="scenario-icon"><ScenarioIcon slug="grad-school" /></div>
+        <h3 class="scenario-title">Applying to grad school?</h3>
+        <p class="scenario-description">JSTOR, ProQuest dissertations, Interlibrary Loan for research. O'Reilly for technical writing. Free counseling for app stress.</p>
+        <div class="scenario-cta">View resources →</div>
+      </a>
+
+      <a href="/scenarios/job-hunt" class="scenario-card">
+        <div class="scenario-icon"><ScenarioIcon slug="job-hunt" /></div>
+        <h3 class="scenario-title">Job hunting?</h3>
+        <p class="scenario-description">Bloomberg Terminal ($25k/year). Career coaching for life. Interview clothes. News subscriptions. Technical skills like Python and MATLAB. Build a resume that stands out.</p>
+        <div class="scenario-cta">View resources →</div>
+      </a>
+
+      <a href="/scenarios/data-analysis" class="scenario-card">
+        <div class="scenario-icon"><ScenarioIcon slug="data-analysis" /></div>
+        <h3 class="scenario-title">Running data analysis?</h3>
+        <p class="scenario-description">$25k Bloomberg Terminal at Feldberg. MATLAB, SPSS, SAS, JMP Pro. WRDS for finance data. Qualtrics for surveys. Statista for market research.</p>
+        <div class="scenario-cta">View resources →</div>
+      </a>
+
+      <a href="/scenarios/creative" class="scenario-card">
+        <div class="scenario-icon"><ScenarioIcon slug="creative" /></div>
+        <h3 class="scenario-title">Building a portfolio?</h3>
+        <p class="scenario-description">Adobe Creative Cloud ($660/year free). Canva Pro. Hopkins Center performances and art studios. Hood Museum access. Professional creative tools, all included.</p>
+        <div class="scenario-cta">View resources →</div>
+      </a>
+
+      <a href="/scenarios/adventure" class="scenario-card">
+        <div class="scenario-icon"><ScenarioIcon slug="adventure" /></div>
+        <h3 class="scenario-title">Planning an adventure?</h3>
+        <p class="scenario-description">DOC cabins ($0-40/night vs. $200+ hotels). Free outdoor gear rentals. Ledyard Canoe Club. DOC Trips for group adventures.</p>
+        <div class="scenario-cta">View resources →</div>
+      </a>
+
+      <a href="/scenarios/save-money" class="scenario-card">
+        <div class="scenario-icon"><ScenarioIcon slug="save-money" /></div>
+        <h3 class="scenario-title">Tight on cash?</h3>
+        <p class="scenario-description">$75/term printing credit. Free winter clothing. NYT/WSJ subscriptions ($400/year value). Free film screenings and Hop shows. Free gym membership.</p>
+        <div class="scenario-cta">View resources →</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Hidden Gems Section -->
+  {hiddenGems.length > 0 && (
+    <div class="hidden-gems-section">
+      <div class="hidden-gems-header">
+        <h2 class="hidden-gems-title">The stuff nobody tells you about</h2>
+        <p class="hidden-gems-deck">
+          Most people graduate without knowing half of this exists. DOC cabins for $20/night? Bloomberg Terminals you can just walk up and use? Your friend who reads the fine print found these for you.
+        </p>
+      </div>
+      <div class="hidden-gems-grid">
+        {hiddenGems.map((resource) => (
+          <div class="hidden-gem-card">
+            <ResourceCard resource={resource} />
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <NewsletterSignup source="home" />
+
+  <!-- Curated collection membership (slugs), consumed by the client filter -->
+  <script is:inline type="application/json" id="category-group-ids" set:html={JSON.stringify(categoryGroupIds)}></script>
+
+  <style>
+    /* Hero — Catalogue macrostructure */
+    .hero-catalogue {
+      max-width: 90rem;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--space-lg) var(--space-2xl);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: var(--text-display);
+      font-weight: 600;
+      line-height: var(--leading-tight);
+      color: var(--color-ink);
+      margin: 0 0 var(--space-md) 0;
+      max-width: var(--measure-narrow);
+    }
+
+    .hero-deck {
+      font-size: var(--text-lg);
+      line-height: var(--leading-relaxed);
+      color: var(--color-ink-muted);
+      margin: 0 0 var(--space-xl) 0;
+      max-width: var(--measure);
+    }
+
+    .hero-deck strong {
+      color: var(--color-ink);
+      font-weight: 600;
+    }
+
+    /* Search */
+    .search-wrapper {
+      position: relative;
+      margin-bottom: var(--space-sm);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: var(--space-sm);
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--color-ink-muted);
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: var(--space-sm) var(--space-md) var(--space-sm) calc(var(--space-md) + 18px + var(--space-2xs));
+      font-family: var(--font-body);
+      font-size: var(--text-lg);
+      line-height: var(--leading-normal);
+      color: var(--color-ink);
+      background: var(--color-paper);
+      border: var(--rule-base) solid var(--color-border-input);
+      border-radius: var(--radius-md);
+      transition: border-color var(--dur-fast) var(--ease-out),
+                  box-shadow var(--dur-fast) var(--ease-out);
+    }
+
+    .search-input::placeholder {
+      color: var(--color-ink-subtle);
+    }
+
+    .search-input:hover {
+      border-color: var(--color-border-strong);
+    }
+
+    .search-input:focus {
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px var(--color-accent-subtle);
+    }
+
+    .access-note {
+      margin: 0 0 var(--space-md) 0;
+      font-size: var(--text-sm);
+      color: var(--color-ink-muted);
+    }
+
+    /* Curated-collection chips (separate axis from the category select) */
+    .collection-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2xs);
+      margin-bottom: var(--space-md);
+    }
+
+    .chip {
+      padding: var(--space-2xs) var(--space-sm);
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--color-ink-muted);
+      background: var(--color-paper);
+      border: var(--rule-thin) solid var(--color-border-strong);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all var(--dur-fast) var(--ease-out);
+      white-space: nowrap;
+    }
+
+    .chip:hover {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+    }
+
+    .chip[aria-pressed="true"] {
+      color: var(--color-paper);
+      background: var(--color-accent);
+      border-color: var(--color-accent);
+    }
+
+    .no-results-suggestion {
+      margin: 0 0 var(--space-md) 0;
+      font-size: var(--text-base);
+      color: var(--color-ink-muted);
+    }
+
+    .no-results-suggestion button {
+      font: inherit;
+      color: var(--color-accent);
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    /* Filter bar */
+    .filter-bar {
+      padding: var(--space-lg);
+      background: var(--color-paper-2);
+      border: var(--rule-thin) solid var(--color-border);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-2xl);
+    }
+
+    .filter-controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2xs);
+      min-width: 0;
+    }
+
+    .filter-label {
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--color-ink-muted);
+    }
+
+    .filter-select {
+      padding: var(--space-xs) var(--space-sm);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      color: var(--color-ink);
+      background: var(--color-paper);
+      border: var(--rule-thin) solid var(--color-border);
+      border-radius: var(--radius-sm);
+      transition: border-color var(--dur-fast) var(--ease-out);
+      min-width: 0;
+    }
+
+    .filter-select:hover {
+      border-color: var(--color-border-strong);
+    }
+
+    .filter-select:focus {
+      border-color: var(--color-accent);
+    }
+
+    .filter-status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: var(--space-md);
+      border-top: var(--rule-thin) solid var(--color-border);
+      gap: var(--space-md);
+      flex-wrap: wrap;
+    }
+
+    .result-count {
+      margin: 0;
+      font-size: var(--text-sm);
+      color: var(--color-ink-muted);
+    }
+
+    .result-count span {
+      font-weight: 600;
+      color: var(--color-ink);
+    }
+
+    .clear-btn,
+    .clear-btn-alt {
+      padding: 0;
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--color-accent);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: color var(--dur-fast) var(--ease-out);
+      white-space: nowrap;
+    }
+
+    .clear-btn:hover,
+    .clear-btn-alt:hover {
+      color: var(--color-accent-hover);
+      text-decoration: underline;
+    }
+
+    /* Resource grid */
+    .resource-grid {
+      max-width: 90rem;
+      margin: 0 auto;
+      padding: 0 var(--space-lg) var(--space-2xl);
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+      gap: var(--space-lg);
+    }
+
+    /* No results */
+    .no-results {
+      max-width: 90rem;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--space-lg);
+      text-align: center;
+    }
+
+    .no-results.hidden {
+      display: none;
+    }
+
+    .no-results-text {
+      margin: 0 0 var(--space-md) 0;
+      font-size: var(--text-lg);
+      color: var(--color-ink-muted);
+    }
+
+    .clear-btn-alt {
+      font-size: var(--text-base);
+    }
+
+    /* Value Calculator Banner */
+    .value-banner {
+      max-width: 90rem;
+      margin: 0 auto var(--space-2xl);
+      padding: 0 var(--space-lg);
+    }
+
+    .value-banner-content {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: center;
+      gap: var(--space-xs);
+      padding: var(--space-md) var(--space-xl);
+      background: var(--color-accent);
+      border-radius: var(--radius-md);
+      text-align: center;
+    }
+
+    .value-amount {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: var(--text-3xl);
+      font-weight: 600;
+      line-height: var(--leading-tight);
+      color: var(--color-paper);
+    }
+
+    .value-label {
+      font-size: var(--text-lg);
+      line-height: var(--leading-normal);
+      color: var(--color-paper);
+      opacity: 0.95;
+    }
+
+    /* Scenarios Section */
+    .scenarios-section {
+      max-width: 90rem;
+      margin: 0 auto var(--space-3xl);
+      padding: 0 var(--space-lg);
+    }
+
+    .scenarios-header {
+      max-width: var(--measure);
+      margin-bottom: var(--space-xl);
+    }
+
+    .scenarios-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: var(--text-2xl);
+      font-weight: 600;
+      line-height: var(--leading-tight);
+      color: var(--color-ink);
+      margin: 0 0 var(--space-2xs) 0;
+    }
+
+    .scenarios-deck {
+      font-size: var(--text-base);
+      line-height: var(--leading-relaxed);
+      color: var(--color-ink-muted);
+      margin: 0;
+    }
+
+    .scenarios-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+      gap: var(--space-md);
+    }
+
+    .scenario-card {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      padding: var(--space-lg);
+      text-align: left;
+      text-decoration: none;
+      background: var(--color-paper);
+      border: var(--rule-base) solid var(--color-border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--dur-fast) var(--ease-out);
+    }
+
+    .scenario-card:hover {
+      border-color: var(--color-accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .scenario-icon {
+      font-size: var(--text-3xl);
+      line-height: 1;
+      margin-bottom: var(--space-3xs);
+    }
+
+    .scenario-title {
+      margin: 0;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: var(--text-lg);
+      font-weight: 600;
+      line-height: var(--leading-snug);
+      color: var(--color-ink);
+    }
+
+    .scenario-description {
+      margin: 0;
+      font-size: var(--text-sm);
+      line-height: var(--leading-relaxed);
+      color: var(--color-ink-muted);
+      flex: 1;
+    }
+
+    .scenario-cta {
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--color-accent);
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+
+    .scenario-card:hover .scenario-cta {
+      color: var(--color-accent-hover);
+    }
+
+    /* Hidden Gems Section */
+    .hidden-gems-section {
+      max-width: 90rem;
+      margin: 0 auto var(--space-3xl);
+      padding: 0 var(--space-lg);
+    }
+
+    .hidden-gems-header {
+      max-width: var(--measure);
+      margin-bottom: var(--space-xl);
+    }
+
+    .hidden-gems-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: var(--text-2xl);
+      font-weight: 600;
+      line-height: var(--leading-tight);
+      color: var(--color-ink);
+      margin: 0 0 var(--space-xs) 0;
+    }
+
+    .hidden-gems-deck {
+      font-size: var(--text-base);
+      line-height: var(--leading-relaxed);
+      color: var(--color-ink-muted);
+      margin: 0;
+    }
+
+    .hidden-gems-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+      gap: var(--space-lg);
+    }
+
+    .hidden-gem-card {
+      position: relative;
+    }
+
+    .hidden-gem-card::before {
+      content: '';
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      right: -4px;
+      bottom: -4px;
+      background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+      border-radius: var(--radius-md);
+      opacity: 0.1;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 768px) {
+      .hero-catalogue {
+        padding: var(--space-2xl) var(--space-md) var(--space-xl);
+      }
+
+      .hero-title {
+        font-size: var(--text-3xl);
+      }
+
+      .hero-deck {
+        font-size: var(--text-base);
+      }
+
+      .filter-bar {
+        padding: var(--space-md);
+      }
+
+      .filter-controls {
+        grid-template-columns: 1fr;
+        gap: var(--space-sm);
+      }
+
+      .filter-status {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-xs);
+      }
+
+      .hidden-gems-section {
+        padding: 0 var(--space-md);
+        margin-bottom: var(--space-2xl);
+      }
+
+      .hidden-gems-title {
+        font-size: var(--text-xl);
+      }
+
+      .hidden-gems-deck {
+        font-size: var(--text-sm);
+      }
+
+      .value-banner {
+        padding: 0 var(--space-md);
+        margin-bottom: var(--space-xl);
+      }
+
+      .value-banner-content {
+        padding: var(--space-lg);
+      }
+
+      .value-amount {
+        font-size: var(--text-3xl);
+      }
+
+      .value-label {
+        font-size: var(--text-base);
+      }
+
+      .scenarios-section {
+        padding: 0 var(--space-md);
+        margin-bottom: var(--space-2xl);
+      }
+
+      .scenarios-title {
+        font-size: var(--text-xl);
+      }
+
+      .scenarios-deck {
+        font-size: var(--text-sm);
+      }
+
+      .scenarios-grid {
+        gap: var(--space-sm);
+        grid-template-columns: 1fr;
+      }
+
+      .scenario-card {
+        padding: var(--space-md);
+      }
+
+      .scenario-icon {
+        font-size: var(--text-2xl);
+      }
+
+      .scenario-title {
+        font-size: var(--text-base);
+      }
+
+      .recently-added-section {
+        padding: 0 var(--space-md);
+        margin-bottom: var(--space-xl);
+      }
+
+      .recently-added-title {
+        font-size: var(--text-lg);
+      }
+
+      .recently-added-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hidden-gems-grid {
+        gap: var(--space-md);
+        grid-template-columns: 1fr;
+      }
+
+      .resource-grid {
+        padding: 0 var(--space-md) var(--space-xl);
+        gap: var(--space-md);
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <script>
+    import { initResourceInteractions } from '../lib/resource-interactions';
+
+    // Curated collection membership: { groupKey: [slug, ...] }, serialized by
+    // the server so filtering matches by membership (not by re-deriving category).
+    const groupIdsEl = document.getElementById('category-group-ids');
+    const categoryGroupIds: Record<string, string[]> = groupIdsEl
+      ? JSON.parse(groupIdsEl.textContent || '{}')
+      : {};
+
+    // Client-side filtering and search
+    const searchInput = document.getElementById('search') as HTMLInputElement;
+    const categoryFilter = document.getElementById('category-filter') as HTMLSelectElement;
+    const eligibilityFilter = document.getElementById('eligibility-filter') as HTMLSelectElement;
+    const sortFilter = document.getElementById('sort-filter') as HTMLSelectElement;
+    const clearFiltersBtn = document.getElementById('clear-filters') as HTMLButtonElement;
+    const clearFiltersBtnAlt = document.getElementById('clear-filters-alt') as HTMLButtonElement;
+    const resultCount = document.getElementById('result-count') as HTMLSpanElement;
+    const resourceGrid = document.getElementById('resource-grid') as HTMLDivElement;
+    const noResults = document.getElementById('no-results') as HTMLDivElement;
+    let resourceItems = Array.from(document.querySelectorAll('.resource-item') as NodeListOf<HTMLDivElement>);
+    const collectionChips = Array.from(document.querySelectorAll('.chip')) as HTMLButtonElement[];
+    const suggestionEl = document.getElementById('no-results-suggestion') as HTMLParagraphElement;
+    let currentCollection = '';
+
+    // Levenshtein distance powers typo-tolerant search and the "did you mean" hint.
+    function editDistance(a: string, b: string): number {
+      const m = a.length, n = b.length;
+      if (!m) return n;
+      if (!n) return m;
+      let prev = Array.from({ length: n + 1 }, (_, i) => i);
+      for (let i = 1; i <= m; i++) {
+        const curr = [i];
+        for (let j = 1; j <= n; j++) {
+          const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+          curr[j] = Math.min(prev[j] + 1, curr[j - 1] + 1, prev[j - 1] + cost);
+        }
+        prev = curr;
+      }
+      return prev[n];
+    }
+
+    // Substring match, plus near-miss tolerance against whole words for typos.
+    function fuzzyIncludes(haystack: string, term: string): boolean {
+      if (haystack.includes(term)) return true;
+      if (term.length < 4) return false;
+      const threshold = term.length <= 6 ? 1 : 2;
+      return haystack.split(/[^a-z0-9]+/).some(
+        (word) => word.length >= 3 && editDistance(word, term) <= threshold
+      );
+    }
+
+    function sortResources() {
+      const sortBy = sortFilter.value;
+
+      resourceItems.sort((a, b) => {
+        const aCard = a.querySelector('.resource-card');
+        const bCard = b.querySelector('.resource-card');
+
+        if (sortBy === 'popular') {
+          const aUpvotes = parseInt(aCard?.querySelector('.upvote-count')?.textContent || '0');
+          const bUpvotes = parseInt(bCard?.querySelector('.upvote-count')?.textContent || '0');
+          return bUpvotes - aUpvotes;
+        } else if (sortBy === 'value') {
+          const aValue = aCard?.querySelector('.value-badge')?.textContent?.replace(/[^0-9]/g, '') || '0';
+          const bValue = bCard?.querySelector('.value-badge')?.textContent?.replace(/[^0-9]/g, '') || '0';
+          return parseInt(bValue) - parseInt(aValue);
+        } else if (sortBy === 'recent') {
+          const aNew = aCard?.querySelector('.new-badge') ? 1 : 0;
+          const bNew = bCard?.querySelector('.new-badge') ? 1 : 0;
+          if (aNew !== bNew) return bNew - aNew;
+          const aName = JSON.parse(a.dataset.searchable || '{}').name || '';
+          const bName = JSON.parse(b.dataset.searchable || '{}').name || '';
+          return aName.localeCompare(bName);
+        } else { // name
+          const aName = JSON.parse(a.dataset.searchable || '{}').name || '';
+          const bName = JSON.parse(b.dataset.searchable || '{}').name || '';
+          return aName.localeCompare(bName);
+        }
+      });
+
+      // Re-append elements in sorted order
+      resourceItems.forEach(item => resourceGrid.appendChild(item));
+    }
+
+    function filterResources() {
+      const searchTerm = searchInput.value.trim().toLowerCase();
+      const selectedCategory = categoryFilter.value;
+      const selectedEligibility = eligibilityFilter.value;
+      const groupKey = currentCollection.startsWith('group:')
+        ? currentCollection.replace('group:', '')
+        : null;
+      const groupMembers = groupKey ? (categoryGroupIds[groupKey] || []) : null;
+
+      let visibleCount = 0;
+
+      resourceItems.forEach((item) => {
+        const category = item.dataset.category || '';
+        const resourceId = item.dataset.resourceId || '';
+        const eligibility = JSON.parse(item.dataset.eligibility || '[]');
+        const searchable = JSON.parse(item.dataset.searchable || '{}');
+
+        const matchesSearch = !searchTerm ||
+          searchable.description.includes(searchTerm) ||
+          fuzzyIncludes(searchable.name, searchTerm) ||
+          fuzzyIncludes(searchable.category, searchTerm);
+
+        const matchesCollection = !groupMembers || groupMembers.includes(resourceId);
+        const matchesCategory = !selectedCategory || category === selectedCategory;
+        const matchesEligibility = !selectedEligibility || eligibility.includes(selectedEligibility);
+
+        if (matchesSearch && matchesCollection && matchesCategory && matchesEligibility) {
+          item.style.display = 'block';
+          visibleCount++;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+
+      resultCount.textContent = visibleCount.toString();
+
+      if (visibleCount === 0) {
+        resourceGrid.classList.add('hidden');
+        noResults.classList.remove('hidden');
+        showSuggestion(searchTerm);
+      } else {
+        resourceGrid.classList.remove('hidden');
+        noResults.classList.add('hidden');
+      }
+    }
+
+    // On an empty search, offer the closest catalog name as a clickable hint.
+    function showSuggestion(term: string) {
+      suggestionEl.textContent = '';
+      if (!term || term.length < 3) return;
+      let bestItem: HTMLElement | null = null;
+      let bestDist = Infinity;
+      resourceItems.forEach((item) => {
+        const name = JSON.parse(item.dataset.searchable || '{}').name || '';
+        name.split(/[^a-z0-9]+/).forEach((word: string) => {
+          if (word.length < 3) return;
+          const d = editDistance(word, term);
+          if (d < bestDist) {
+            bestDist = d;
+            bestItem = item;
+          }
+        });
+      });
+      if (bestItem && bestDist <= 3) {
+        const title = (bestItem as HTMLElement).querySelector('.card-title')?.textContent?.trim() || '';
+        if (title) {
+          suggestionEl.append('Did you mean ');
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.textContent = title;
+          btn.addEventListener('click', () => {
+            searchInput.value = title;
+            filterResources();
+            searchInput.focus();
+          });
+          suggestionEl.append(btn, '?');
+        }
+      }
+    }
+
+    function setCollection(value: string) {
+      currentCollection = value;
+      collectionChips.forEach((chip) => {
+        chip.setAttribute('aria-pressed', (chip.dataset.group || '') === value ? 'true' : 'false');
+      });
+    }
+
+    function clearFilters() {
+      searchInput.value = '';
+      categoryFilter.value = '';
+      eligibilityFilter.value = '';
+      sortFilter.value = 'name';
+      setCollection('');
+      sortResources();
+      filterResources();
+    }
+
+    collectionChips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        setCollection(chip.dataset.group || '');
+        filterResources();
+      });
+    });
+
+    searchInput.addEventListener('input', filterResources);
+    categoryFilter.addEventListener('change', filterResources);
+    eligibilityFilter.addEventListener('change', filterResources);
+    sortFilter.addEventListener('change', sortResources);
+    clearFiltersBtn.addEventListener('click', clearFilters);
+    clearFiltersBtnAlt.addEventListener('click', clearFilters);
+
+    // Initial sort
+    sortResources();
+
+    // Upvote + report behavior (shared across all pages).
+    initResourceInteractions();
+  </script>
+</BaseLayout>

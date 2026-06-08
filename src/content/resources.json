@@ -1,0 +1,1499 @@
+[
+  {
+    "id": "microsoft-365",
+    "name": "Microsoft 365 (Office)",
+    "category": "software",
+    "description": "Full Office suite including Word, Excel, PowerPoint, and OneDrive. Install on up to 5 devices.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=150849",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Microsoft Office FAQ with installation instructions",
+    "added_by": "human",
+    "annual_value": 70,
+    "date_added": "2025-09-01"
+  },
+  {
+    "id": "adobe-creative-cloud",
+    "name": "Adobe Creative Cloud",
+    "category": "software",
+    "description": "Full Creative Cloud suite (Photoshop, Illustrator, Premiere, etc.) for A&S and Guarini students. Students now request access to either Creative Cloud or Adobe Express.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=168309",
+    "eligibility": [
+      "student"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Arts & Sciences and Guarini students - request-based access starting Sept 2025",
+    "added_by": "human",
+    "annual_value": 660,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "google-workspace",
+    "name": "Google Workspace",
+    "category": "software",
+    "description": "Gmail, Drive, Docs, Sheets, Slides with 1TB storage. Access via google.dartmouth.edu.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=102747",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": null,
+    "added_by": "human",
+    "annual_value": 0,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "matlab",
+    "name": "MATLAB",
+    "category": "software",
+    "description": "MATLAB and Simulink for numerical computing, data analysis, and algorithm development. Campus-wide site license for personal and Dartmouth-owned computers.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=83245",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "License renews annually on June 30",
+    "added_by": "human",
+    "annual_value": 500,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "zoom-pro",
+    "name": "Zoom Pro",
+    "category": "software",
+    "description": "Unlimited meeting length with up to 300 participants, cloud recording, and advanced features.",
+    "link": "https://services.dartmouth.edu/TDClient/2415/Student/KB/ArticleDet?ID=107229",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "300 participant limit for students; 1000 for faculty/staff",
+    "added_by": "human",
+    "annual_value": 150,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "news-access",
+    "name": "News Access (NYT, WSJ, & More)",
+    "category": "news",
+    "description": "Free digital access to major news platforms including New York Times, Wall Street Journal, Boston Globe, and Valley News.",
+    "link": "https://www.library.dartmouth.edu/news/11-things",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "library.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Jump the Paywalls section - consolidated news access page",
+    "added_by": "human",
+    "annual_value": 400,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "library-databases",
+    "name": "Library Research Databases",
+    "category": "library",
+    "description": "Access to databases including JSTOR, LinkedIn Learning, O'Reilly Learning, Statista, and more curated by subject librarians.",
+    "link": "https://researchguides.dartmouth.edu/az.php",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "library.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Selected Databases A-Z - not comprehensive but librarian-curated",
+    "added_by": "human",
+    "annual_value": null,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "bloomberg-terminal",
+    "name": "Bloomberg Terminal at Feldberg",
+    "category": "library",
+    "description": "In-person access to 10 Bloomberg Terminals for financial data and analysis at Feldberg Business & Engineering Library.",
+    "link": "https://researchguides.dartmouth.edu/bloomberg",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "library.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "In-person only at Feldberg Library - no remote access",
+    "added_by": "human",
+    "hidden_gem": true,
+    "annual_value": 25000,
+    "date_added": "2026-05-27",
+    "lat": 43.7051337,
+    "lng": -72.2950639,
+    "place": "Feldberg Library"
+  },
+  {
+    "id": "interlibrary-loan",
+    "name": "Interlibrary Loan",
+    "category": "library",
+    "description": "Free delivery of books, articles, and materials not available at Dartmouth from libraries worldwide. BorrowDirect for faster access.",
+    "link": "https://www.library.dartmouth.edu/find/borrow-request/borrowing-from-other-libraries",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "library.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Alumni with NetID can use ILL with $16 minimum charge",
+    "added_by": "human",
+    "annual_value": null,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "doc-gear-rentals",
+    "name": "Dartmouth Outdoor Rentals",
+    "category": "outdoor",
+    "description": "Free rental of camping, hiking, and outdoor gear including tents, sleeping bags, backpacks, and winter equipment for all four seasons.",
+    "link": "https://outdoors.dartmouth.edu/outdoor-programs-office/dartmouth-outdoor-rentals",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "outdoors.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Free for all Dartmouth community with ID; one-week rental periods",
+    "added_by": "human",
+    "annual_value": 100,
+    "date_added": "2026-05-27",
+    "lat": 43.7031127,
+    "lng": -72.2899067,
+    "place": "Robinson Hall (DOC)"
+  },
+  {
+    "id": "doc-trips",
+    "name": "DOC Trips",
+    "category": "outdoor",
+    "description": "Subsidized outdoor trips throughout the year including hiking, paddling, climbing, and camping. Trailhead trips and break trips available.",
+    "link": "https://outdoors.dartmouth.edu/dartmouth-outing-club/go-trip",
+    "eligibility": [
+      "student"
+    ],
+    "source": "outdoors.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Free gear rental included; DOC subsidizes trip costs",
+    "added_by": "human",
+    "annual_value": 200,
+    "date_added": "2026-05-27",
+    "lat": 43.7031127,
+    "lng": -72.2899067,
+    "place": "Robinson Hall (DOC)"
+  },
+  {
+    "id": "doc-cabin-rentals",
+    "name": "DOC Cabin Rentals",
+    "category": "outdoor",
+    "description": "Rent DOC cabins throughout New Hampshire including the Second College Grant and hills near Hanover. 18 cabins total with rates ranging from free (undergrads at Grant cabins) to $100/night (Hanover area cabins).",
+    "link": "https://outdoors.dartmouth.edu/services/cabins/",
+    "eligibility": [
+      "student",
+      "alumni"
+    ],
+    "source": "outdoors.dartmouth.edu",
+    "last_verified": "2026-05-28",
+    "status": "active",
+    "notes": "Hanover cabins: $40-$250/night with DOC life member discounts. Grant cabins: Free for undergrads, $7-$35/person for others. DOC life members get 50% off for spouse, 75% off for kids.",
+    "added_by": "human",
+    "hidden_gem": true,
+    "annual_value": 150,
+    "date_added": "2026-05-27",
+    "lat": 43.7031127,
+    "lng": -72.2899067,
+    "place": "Robinson Hall (DOC)"
+  },
+  {
+    "id": "ledyard-canoe-club",
+    "name": "Ledyard Canoe Club",
+    "category": "outdoor",
+    "description": "Canoe, kayak, and paddleboard rentals on the Connecticut River. Free summer rentals for students; memberships available.",
+    "link": "https://sites.dartmouth.edu/ledyardcanoeclub/",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "ledyardcanoeclub.org",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Free summer rentals for students in 2024; membership entitles holders to two free kayaks per day",
+    "added_by": "human",
+    "hidden_gem": true,
+    "annual_value": 80,
+    "date_added": "2026-05-27",
+    "lat": 43.7066046,
+    "lng": -72.2966115,
+    "place": "Ledyard Canoe Club"
+  },
+  {
+    "id": "printing-credit",
+    "name": "$75/term Printing Credit",
+    "category": "money",
+    "description": "Automatic GreenPrint printing credit loaded each term for campus printers. Black & white printing at $0.06/page.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=115435",
+    "eligibility": [
+      "student"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Increased from $60 in 2023; additional funds can be requested",
+    "added_by": "human",
+    "annual_value": 225,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "winter-clothing",
+    "name": "Free Winter Clothing Resources",
+    "category": "money",
+    "description": "Free winter clothing including coats and gear through Free Market Thrift Store and Dartmouth Outdoor Rentals winter gear lending.",
+    "link": "https://home.dartmouth.edu/news/2023/09/thrift-store-free-clothing-opens-campus",
+    "eligibility": [
+      "student"
+    ],
+    "source": "home.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Free Market in North Mass basement; also borrow snowshoes & winter clothes from Outdoor Rentals",
+    "added_by": "human",
+    "hidden_gem": true,
+    "annual_value": 200,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "dicks-house",
+    "name": "Dick's House Medical Services",
+    "category": "health",
+    "description": "Primary care, urgent care, and specialist appointments with on-site, Zoom, and phone visit options.",
+    "link": "https://students.dartmouth.edu/health-service/",
+    "eligibility": [
+      "student"
+    ],
+    "source": "students.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Covered by health services fee",
+    "added_by": "human",
+    "annual_value": null,
+    "date_added": "2026-05-27",
+    "lat": 43.7087805,
+    "lng": -72.2869402,
+    "place": "Dick's House"
+  },
+  {
+    "id": "counseling-sessions",
+    "name": "Free Counseling Sessions",
+    "category": "health",
+    "description": "Free short-term individual counseling at the Student Wellness Center Counseling Center. Also free UWill access for phone, video, and chat counseling.",
+    "link": "https://students.dartmouth.edu/health-service/counseling/appointments-services/short-term-individual-counseling",
+    "eligibility": [
+      "student"
+    ],
+    "source": "students.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "All counseling sessions are free; call 603-646-9442 to schedule",
+    "added_by": "human",
+    "annual_value": 600,
+    "date_added": "2026-05-27",
+    "lat": 43.7087805,
+    "lng": -72.2869402,
+    "place": "Dick's House"
+  },
+  {
+    "id": "cpd-career-advising",
+    "name": "Center for Career Design",
+    "category": "career",
+    "description": "One-on-one career coaching, resume reviews, interview prep, job search support, and networking. Now includes AI-powered career tools.",
+    "link": "https://careerdesign.dartmouth.edu/",
+    "eligibility": [
+      "student",
+      "alumni"
+    ],
+    "source": "careerdesign.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Lifetime access for alumni; formerly called Center for Professional Development (CPD)",
+    "added_by": "human",
+    "annual_value": 300,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "professional-clothing-closet",
+    "name": "Career Closet (Thayer)",
+    "category": "career",
+    "description": "Free professional attire for interviews and career events. Take what you need, return or keep it.",
+    "link": "https://engineering.dartmouth.edu/community/offices/career-services/students",
+    "eligibility": [
+      "student"
+    ],
+    "source": "engineering.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Located in Room 113, MacLean ESC (Thayer Engineering)",
+    "added_by": "human",
+    "annual_value": 150,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "alumni-gym",
+    "name": "Lewinstein Athletic Center (Alumni Gym)",
+    "category": "campus-life",
+    "description": "129,000 sq ft facility with Zimmerman Fitness Center (70+ cardio machines, 40+ strength machines), two pools, basketball courts, and 1/13 mile jogging track.",
+    "link": "https://recreation.dartmouth.edu/about/facilities",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "recreation.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Open 5AM-10PM weekdays, 8AM-10PM weekends; free with student ID",
+    "added_by": "human",
+    "annual_value": 500,
+    "date_added": "2026-05-27",
+    "lat": 43.7027535,
+    "lng": -72.2839576,
+    "place": "Alumni Gym"
+  },
+  {
+    "id": "hop-performances",
+    "name": "Hopkins Center Performances",
+    "category": "campus-life",
+    "description": "World-class performances including theater, dance, music, and film. Many shows free or discounted with student ID.",
+    "link": "https://hop.dartmouth.edu/",
+    "eligibility": [
+      "student"
+    ],
+    "source": "hop.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Many shows free with student ID",
+    "added_by": "human",
+    "annual_value": 200,
+    "date_added": "2026-05-27",
+    "lat": 43.7016388,
+    "lng": -72.2881577,
+    "place": "Hopkins Center"
+  },
+  {
+    "id": "hood-museum",
+    "name": "Hood Museum of Art",
+    "category": "campus-life",
+    "description": "Access to the Hood Museum with rotating exhibitions and permanent collections of art from around the world.",
+    "link": "https://hoodmuseum.dartmouth.edu/",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff",
+      "public"
+    ],
+    "source": "hoodmuseum.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Free for everyone",
+    "added_by": "human",
+    "annual_value": 0,
+    "date_added": "2026-05-27",
+    "lat": 43.7017761,
+    "lng": -72.287367,
+    "place": "Hood Museum of Art"
+  },
+  {
+    "id": "athletic-events",
+    "name": "Dartmouth Athletic Events",
+    "category": "campus-life",
+    "description": "Varsity sports events including hockey, football, basketball, rowing, and more across multiple sports.",
+    "link": "https://dartmouthsports.com/",
+    "eligibility": [
+      "student"
+    ],
+    "source": "dartmouthsports.com",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Most events free with student ID",
+    "added_by": "human",
+    "annual_value": 150,
+    "date_added": "2026-05-27",
+    "lat": 43.7029923,
+    "lng": -72.2828423,
+    "place": "Athletic Facilities"
+  },
+  {
+    "id": "library-card-alumni",
+    "name": "Library Card for Life",
+    "category": "alumni-only",
+    "description": "Lifetime library borrowing privileges for alumni and their spouses/partners. Free registration with valid ID at Baker-Berry circulation desk.",
+    "link": "https://www.library.dartmouth.edu/find/borrow-request/who",
+    "eligibility": [
+      "alumni"
+    ],
+    "source": "library.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Includes spouse/partner; register in person at Baker-Berry",
+    "added_by": "human",
+    "hidden_gem": true,
+    "annual_value": 50,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "digital-library-alumni",
+    "name": "Digital Library for Alumni",
+    "category": "alumni-only",
+    "description": "Remote access to selected library databases, full-text journals, magazines, and newspapers through Alumni Research Guide.",
+    "link": "https://researchguides.dartmouth.edu/alumni",
+    "eligibility": [
+      "alumni"
+    ],
+    "source": "library.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Login with NetID; includes freely available content links",
+    "added_by": "human",
+    "annual_value": null,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "alumni-email-forwarding",
+    "name": "Alumni Email Forwarding",
+    "category": "alumni-only",
+    "description": "Lifetime email forwarding service at @dartmouth.edu address. Forwarding-only (no mailbox) to keep your Dartmouth email for life.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=108554",
+    "eligibility": [
+      "alumni"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Forwarding-only service; no mailbox storage",
+    "added_by": "human",
+    "annual_value": 0,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "career-services-alumni",
+    "name": "Career Services for Life",
+    "category": "alumni-only",
+    "description": "Lifetime access to Center for Career Design including Dartmouth Connect platform, alumni job board, networking events, and AI-powered career tools.",
+    "link": "https://alumni.dartmouth.edu/career-resources",
+    "eligibility": [
+      "alumni"
+    ],
+    "source": "alumni.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Dartmouth Connect for networking; access at all career stages",
+    "added_by": "human",
+    "annual_value": 300,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "alumni-directory",
+    "name": "Alumni Directory",
+    "category": "alumni-only",
+    "description": "Searchable directory of 80,000+ Dartmouth alumni worldwide for networking. Search by name, class year, location, or industry.",
+    "link": "https://alumni.dartmouth.edu/alumni-directory",
+    "eligibility": [
+      "alumni"
+    ],
+    "source": "alumni.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "For official Dartmouth use and alumni connecting; reproducing info requires consent",
+    "added_by": "human",
+    "annual_value": 0,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "rauner-special-collections",
+    "name": "Rauner Special Collections",
+    "category": "library",
+    "description": "Access to over 100,000 rare books, millions of manuscripts, and the Dartmouth College Archives with hands-on research support.",
+    "link": "https://www.library.dartmouth.edu/rauner",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff",
+      "alumni",
+      "public"
+    ],
+    "source": "library.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Open to public by appointment",
+    "added_by": "human",
+    "hidden_gem": true,
+    "annual_value": null,
+    "date_added": "2026-05-27",
+    "lat": 43.7044688,
+    "lng": -72.2881698,
+    "place": "Webster Hall (Rauner)"
+  },
+  {
+    "id": "tuck-digital-library",
+    "name": "Tuck Digital Library for Alumni",
+    "category": "tuck",
+    "description": "Remote access to business databases, full-text journals, magazines, and newspapers for Tuck School graduates through myTUCK portal.",
+    "link": "https://mytuck.dartmouth.edu/s/1353/05-myTUCK/mytuck-secondary.aspx?sid=1353&gid=5&pgid=539",
+    "eligibility": [
+      "alumni"
+    ],
+    "source": "tuck.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Tuck alumni only; complimentary access",
+    "added_by": "human",
+    "annual_value": null,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "mathematica",
+    "name": "Mathematica/Wolfram",
+    "category": "software",
+    "description": "Desktop and online access to Mathematica for symbolic computation, numerical analysis, and data visualization. Site license for curricular and research use.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=64730",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Access via Wolfram Cloud (wolframcloud.com) or desktop download; sign in with Dartmouth email",
+    "added_by": "agent",
+    "annual_value": 300,
+    "date_added": "2026-05-15"
+  },
+  {
+    "id": "spss",
+    "name": "SPSS",
+    "category": "software",
+    "description": "IBM SPSS statistical analysis software including Base Package, Advanced Statistics, and Regression modules. Network license for Windows and Mac.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=64628",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Must be on campus network or VPN; current version is 28",
+    "added_by": "agent",
+    "annual_value": 1200,
+    "date_added": "2026-05-15"
+  },
+  {
+    "id": "sas",
+    "name": "SAS",
+    "category": "software",
+    "description": "SAS statistical analysis software provided at no cost for desktop use and on Research Computing servers. Licensed for academic use only.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=152019",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Available on Discovery HPC cluster and for desktop installation",
+    "added_by": "agent",
+    "annual_value": 1500,
+    "date_added": "2026-05-15"
+  },
+  {
+    "id": "jmp-pro",
+    "name": "JMP Pro",
+    "category": "software",
+    "description": "JMP statistical software with Pro features for data analysis, visualization, and statistical modeling. Free 12-month Student Edition license.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=64613",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "12-month license renewable annually; requires Dartmouth ID verification via proxi.id",
+    "added_by": "agent",
+    "annual_value": 500,
+    "date_added": "2026-05-15"
+  },
+  {
+    "id": "qualtrics",
+    "name": "Qualtrics",
+    "category": "software",
+    "description": "Professional survey platform for designing surveys, collecting data, and analyzing results. Includes advanced features like Stats IQ and multilingual surveys.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=64633",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Academic use only; HIPAA-compliant; access at dartmouth.qualtrics.com",
+    "added_by": "agent",
+    "annual_value": 1500,
+    "date_added": "2026-05-15"
+  },
+  {
+    "id": "arcgis-pro",
+    "name": "ArcGIS Pro",
+    "category": "software",
+    "description": "ESRI ArcGIS Pro for mapping, spatial analysis, and GIS work. Includes ArcGIS Online, ArcGIS StoryMaps, and desktop software via sitewide license.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=144381",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Windows only (Mac/Linux can use via Remote Desktop Services); access ArcGIS Online at dartmouth.maps.arcgis.com",
+    "added_by": "agent",
+    "annual_value": 700,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "cloud-storage",
+    "name": "Cloud Storage (1TB x3)",
+    "category": "software",
+    "description": "1TB of storage on each of three platforms: Google Drive, Microsoft OneDrive, and Dropbox. Sync across devices with desktop clients or web access.",
+    "link": "https://services.dartmouth.edu/TDClient/2415/Student/KB/ArticleDet?ID=107192",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Total 3TB across three services; OneDrive capped at 100GB for A1 license users as of Feb 2024",
+    "added_by": "agent",
+    "annual_value": 60,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "globalprotect-vpn",
+    "name": "GlobalProtect VPN",
+    "category": "software",
+    "description": "Secure VPN access to Dartmouth network resources from any location. Connect to campus systems, databases, and network drives remotely.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=66806",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Requires Duo two-factor authentication; vpn.dartmouth.edu or vpn-split.dartmouth.edu",
+    "added_by": "agent",
+    "annual_value": 40,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "panopto",
+    "name": "Panopto",
+    "category": "software",
+    "description": "Video recording, editing, and sharing platform. Record lectures, create video assignments, and manage course videos with Canvas integration.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=121564",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Access at panopto.dartmouth.edu; alumni retain access to their recordings after graduation",
+    "added_by": "agent",
+    "annual_value": 200,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "wrds",
+    "name": "WRDS (Wharton Research Data)",
+    "category": "library",
+    "description": "Access to premium financial and economic datasets including CRSP stock data, COMPUSTAT financials, IBES analyst forecasts, OptionMetrics, and more for quantitative research.",
+    "link": "https://researchguides.dartmouth.edu/wrds",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "library.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "No summer access for students; includes SAS/R/Python programming tools; PhD, Master's, and undergrad students eligible",
+    "added_by": "agent",
+    "annual_value": 3000,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "web-of-science",
+    "name": "Web of Science",
+    "category": "library",
+    "description": "Citation database indexing scholarly literature across sciences, social sciences, arts, and humanities. Track citations, analyze research impact, and discover related papers.",
+    "link": "https://researchguides.dartmouth.edu/c.php?g=59725&p=9910244",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "library.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Access on campus or via VPN; export 500-1000 records at a time; API access available",
+    "added_by": "agent",
+    "annual_value": null,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "scopus",
+    "name": "Scopus",
+    "category": "library",
+    "description": "Abstract and citation database with 55M records from 22,000+ peer-reviewed journals. Covers science, technology, medicine, social sciences, and humanities with bibliometric tools.",
+    "link": "https://researchguides.dartmouth.edu/medlibresources",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "library.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Includes Medline and Embase records; citation alerts and research tracking tools; records dating to 1823",
+    "added_by": "agent",
+    "annual_value": null,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "nexis-uni",
+    "name": "Nexis Uni (LexisNexis)",
+    "category": "library",
+    "description": "Full-text legal and news database with federal/state laws, court cases, regulations, patents, newspapers, business information, and company directories.",
+    "link": "https://researchguides.dartmouth.edu/law/home",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "library.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Formerly LexisNexis Academic; includes current news, legal research, business data; HIPAA-compliant for medical research",
+    "added_by": "agent",
+    "annual_value": null,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "jstor",
+    "name": "JSTOR",
+    "category": "library",
+    "description": "Multidisciplinary digital library with millions of academic journal articles, books, and primary sources across humanities, social sciences, and sciences.",
+    "link": "https://search.library.dartmouth.edu/permalink/01DCL_INST/16rgcn8/alma991022910609705706",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "library.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Access to journal content only; book content not included in Dartmouth subscription",
+    "added_by": "agent",
+    "annual_value": null,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "oreilly-learning",
+    "name": "O'Reilly Learning (Safari Books)",
+    "category": "library",
+    "description": "Instant access to ebook collections and instructional videos from O'Reilly Media, Adobe Press, Peachpit Press, Microsoft Press, and more for technology and professional development.",
+    "link": "https://learning.oreilly.com/accounts/login-academic-check/?idp-slug=dartmouth-college",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "library.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Formerly Safari Books Online; access limited to titles from last 3 years plus current year",
+    "added_by": "agent",
+    "annual_value": 500,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "statista",
+    "name": "Statista",
+    "category": "library",
+    "description": "Leading statistics portal with access to data and studies from market researchers, trade organizations, scientific publications, and government sources covering 600+ industries.",
+    "link": "https://www.statista.com/sso/login?connection=dartmouth-college",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "library.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": null,
+    "added_by": "agent",
+    "annual_value": 2000,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "psycinfo",
+    "name": "PsycINFO",
+    "category": "library",
+    "description": "The best resource for scholarly publications in psychology and the brain sciences. Indexes citations and summaries of journal articles, book chapters, books, and technical reports.",
+    "link": "https://search.ebscohost.com/login.aspx?authtype=ip,shib&profile=ehost&defaultdb=psyh&custid=dartcol&groupid=main",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "library.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Provided by APA (American Psychological Association); includes PsycTests for finding psychological tests and measures",
+    "added_by": "agent",
+    "annual_value": null,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "proquest",
+    "name": "ProQuest Dissertations & Theses Global",
+    "category": "library",
+    "description": "Citations for dissertations and theses from 1861 to present with full text from 1997 forward. Includes millions of pages of scholarly content for text and data mining.",
+    "link": "https://dartmouth.idm.oclc.org/login?url=https://search.proquest.com/pqdtglobal/advanced?accountid=10422",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "library.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Also includes ProQuest TDM Studio for text analysis; abstracts available from 1980 onward",
+    "added_by": "agent",
+    "annual_value": null,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "programming-board-events",
+    "name": "Programming Board Events",
+    "category": "campus-life",
+    "description": "Free social and entertainment events including Green Key spring concert, Coffeehouse concert series, Winter Carnival, Big Prize Bingo, roller-skating, stand-up comedy, and ski weekends.",
+    "link": "https://students.dartmouth.edu/collis/organizations/student-organizations-governing-boards/programming-board",
+    "eligibility": [
+      "student"
+    ],
+    "source": "students.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Most Programming Board events are free and open to all students; Green Key concert is the flagship annual event",
+    "added_by": "agent",
+    "annual_value": 100,
+    "date_added": "2026-05-27",
+    "lat": 43.7027817,
+    "lng": -72.2899647,
+    "place": "Collis Center"
+  },
+  {
+    "id": "dartmouth-film-society",
+    "name": "Dartmouth Film Society Membership",
+    "category": "campus-life",
+    "description": "Student organization membership includes free movie tickets to the Hop, free dinner every Monday, and access to special screenings and film industry networking. Founded in 1949, oldest college film society in the country.",
+    "link": "https://hop.dartmouth.edu/students/film-society",
+    "eligibility": [
+      "student"
+    ],
+    "source": "hop.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Meetings Tuesdays at 6pm in Wilson Hall 205; email dfs@dartmouth.edu to join",
+    "added_by": "agent",
+    "annual_value": 120,
+    "date_added": "2026-05-27",
+    "lat": 43.7016388,
+    "lng": -72.2881577,
+    "place": "Hopkins Center"
+  },
+  {
+    "id": "advance-transit",
+    "name": "Advance Transit (Free Bus)",
+    "category": "transportation",
+    "description": "Fare-free public bus service throughout the Upper Valley connecting Dartmouth to Lebanon, Norwich, Hartford, Enfield, and Canaan with wheelchair accessible buses and bike racks.",
+    "link": "https://advancetransit.com/areas-we-serve/dartmouth/",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff",
+      "public"
+    ],
+    "source": "advancetransit.com",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "All rides free; Dartmouth-Hanover shuttle runs every 10 min during school year",
+    "added_by": "agent",
+    "annual_value": 0,
+    "date_added": "2026-05-27",
+    "lat": 43.7023791,
+    "lng": -72.2883371,
+    "place": "Advance Transit (Hanover)"
+  },
+  {
+    "id": "cable-makerspace",
+    "name": "Cable Makerspace (3D Printing & Laser Cutting)",
+    "category": "campus-life",
+    "description": "Open makerspace with 3D printers, laser cutter, CNC machine, soldering stations, sewing machines, and hand tools. Equipment, basic materials, and training provided at no charge.",
+    "link": "https://engineering.dartmouth.edu/makerspace",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "engineering.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Safety training required; CAD workstations with SolidWorks and Adobe Suite available",
+    "added_by": "agent",
+    "annual_value": 200,
+    "date_added": "2026-05-27",
+    "lat": 43.7016388,
+    "lng": -72.2881577,
+    "place": "Hopkins Center"
+  },
+  {
+    "id": "hop-woodworking-shop",
+    "name": "Hopkins Center Woodworking Shop",
+    "category": "campus-life",
+    "description": "Free woodworking shop access for all Dartmouth students after completing one-hour orientation session. Professional woodworkers mentor in makerspace-style format.",
+    "link": "https://hop.dartmouth.edu/students/woodworking",
+    "eligibility": [
+      "student"
+    ],
+    "source": "hop.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "One orientation session certifies students to use all power tools; located in Hop lower level",
+    "added_by": "agent",
+    "annual_value": 150,
+    "date_added": "2026-05-27",
+    "lat": 43.7016388,
+    "lng": -72.2881577,
+    "place": "Hopkins Center"
+  },
+  {
+    "id": "hop-ceramics-studio",
+    "name": "Hopkins Center Ceramics Studio",
+    "category": "campus-life",
+    "description": "Open ceramics studio with handbuilding and wheel throwing courses. Free access for students after orientation.",
+    "link": "https://hop.dartmouth.edu/students/ceramics",
+    "eligibility": [
+      "student"
+    ],
+    "source": "hop.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Located in Hop lower level Room 61",
+    "added_by": "agent",
+    "annual_value": 150,
+    "date_added": "2026-05-27",
+    "lat": 43.7016388,
+    "lng": -72.2881577,
+    "place": "Hopkins Center"
+  },
+  {
+    "id": "hop-music-practice-rooms",
+    "name": "Hop Music Practice Rooms & Instruments",
+    "category": "campus-life",
+    "description": "16 practice rooms with pianos available first-come, first-serve, plus free instrument lending for orchestral, wind band, and jazz instruments.",
+    "link": "https://music.dartmouth.edu/performance/facilities/practice-rooms",
+    "eligibility": [
+      "student"
+    ],
+    "source": "music.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Open 7am-11pm daily; instrument storage available for students in ensembles or music courses",
+    "added_by": "agent",
+    "annual_value": 200,
+    "date_added": "2026-05-27",
+    "lat": 43.7016388,
+    "lng": -72.2881577,
+    "place": "Hopkins Center"
+  },
+  {
+    "id": "climbing-gym",
+    "name": "Dartmouth Climbing Gym",
+    "category": "campus-life",
+    "description": "Free 23-foot tall bouldering wall in Maxwell Dormitory basement for all skill levels. Sign up required via Trailhead.",
+    "link": "https://outdoors.dartmouth.edu/facilities/climbing-gym",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "outdoors.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Open Sun-Fri 8-11am & 4-10pm, Sat 4-10pm; reserve time slots via Trailhead",
+    "added_by": "agent",
+    "annual_value": 300,
+    "date_added": "2026-05-27",
+    "lat": 43.7027535,
+    "lng": -72.2839576,
+    "place": "Alumni Gym"
+  },
+  {
+    "id": "dickey-international-internship-funding",
+    "name": "Dickey Center International Internship Funding",
+    "category": "money",
+    "description": "Standard $5,500 funding for international internships (8-10 weeks, 35-40 hrs/week). Build Your Own internship must be international in location or scope.",
+    "link": "https://dickey.dartmouth.edu/programs/global-studies/international-internships/dickey-international-internships",
+    "eligibility": [
+      "student"
+    ],
+    "source": "dickey.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Must be on registered leave term and return to Dartmouth for at least one term after; additional funding may be considered case-by-case",
+    "added_by": "agent",
+    "annual_value": 5500,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "rockefeller-internship-funding",
+    "name": "Rockefeller Center Internship Funding",
+    "category": "money",
+    "description": "Up to $6,500 grants for in-person or hybrid internships in public policy research, law, policy analysis, or activities that shape public policy.",
+    "link": "https://rockefeller.dartmouth.edu/funding/internship-funding",
+    "eligibility": [
+      "student"
+    ],
+    "source": "rockefeller.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "For undergraduate students pursuing policy-focused work",
+    "added_by": "agent",
+    "annual_value": 6500,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "rockefeller-thesis-grants",
+    "name": "Rockefeller Center Senior Thesis Grants",
+    "category": "money",
+    "description": "Grants from $100 to $2,000 for undergraduate students writing Senior Honors Theses in the Social Sciences.",
+    "link": "https://rockefeller.dartmouth.edu/funding/senior-honors-thesis-grants",
+    "eligibility": [
+      "student"
+    ],
+    "source": "rockefeller.dartmouth.edu",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "For seniors writing honors theses on public policy or social science topics",
+    "added_by": "agent",
+    "annual_value": 1000,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "mfa-boston-free-admission",
+    "name": "Museum of Fine Arts Boston (Free for Dartmouth Students)",
+    "category": "off-campus",
+    "description": "Free museum admission for Dartmouth students through McLane Family New Hampshire Student Membership Program. Access to world-class art collections.",
+    "link": "https://www.mfa.org/membership/universities",
+    "eligibility": [
+      "student"
+    ],
+    "source": "mfa.org",
+    "last_verified": "2026-05-27",
+    "status": "active",
+    "notes": "Show valid Dartmouth student ID for free ticketed admission; Dartmouth is a participating institution",
+    "added_by": "agent",
+    "annual_value": 60,
+    "date_added": "2026-05-27"
+  },
+  {
+    "id": "canva",
+    "name": "Canva for Campus",
+    "category": "software",
+    "description": "Professional design tool for creating graphics, presentations, social media content, videos, and documents. Includes premium templates, stock photos, and brand management features.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=147889",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-28",
+    "status": "active",
+    "notes": "Sign up with Dartmouth email at canva.com/education; includes Canva Pro features",
+    "added_by": "agent",
+    "annual_value": 120,
+    "date_added": "2026-05-28"
+  },
+  {
+    "id": "bitwarden",
+    "name": "Bitwarden Enterprise",
+    "category": "software",
+    "description": "Open-source password manager with enterprise features. Securely store, share, and manage passwords across all devices with end-to-end encryption.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=161177",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-28",
+    "status": "active",
+    "notes": "Dartmouth-sponsored enterprise vault; sign up with Dartmouth email at vault.bitwarden.com",
+    "added_by": "agent",
+    "annual_value": 40,
+    "date_added": "2026-05-28"
+  },
+  {
+    "id": "atlassian-access",
+    "name": "Atlassian Access (Jira, Confluence, Trello)",
+    "category": "software",
+    "description": "Atlassian cloud products including Jira for project management, Confluence for documentation, Trello for task tracking, and Bitbucket for Git repositories, with Dartmouth SSO authentication.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=151718",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-28",
+    "status": "active",
+    "notes": "Atlassian Access connects cloud products to Dartmouth's identity provider for SSO",
+    "added_by": "agent",
+    "annual_value": 600,
+    "date_added": "2026-05-28"
+  },
+  {
+    "id": "slack-enterprise",
+    "name": "Slack",
+    "category": "software",
+    "description": "Collaboration tool for fast, intuitive, and secure team communication. Includes searchable messaging, file sharing, and integration with tools like Zoom and Google Drive.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=94649",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-28",
+    "status": "active",
+    "notes": "Join Dartmouth workspace at dartmouth.slack.com with Dartmouth email",
+    "added_by": "agent",
+    "annual_value": 96,
+    "date_added": "2026-05-28"
+  },
+  {
+    "id": "claude-education",
+    "name": "Claude for Education",
+    "category": "software",
+    "description": "Anthropic's advanced AI assistant (Claude 4.5) for research, writing, coding, and problem-solving with educational access including higher usage limits.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=170487",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-28",
+    "status": "active",
+    "notes": "Sign in with Dartmouth SSO at claude.ai; educational tier with extended context",
+    "added_by": "agent",
+    "annual_value": 240,
+    "date_added": "2026-05-28"
+  },
+  {
+    "id": "overleaf",
+    "name": "Overleaf Professional",
+    "category": "software",
+    "description": "Collaborative LaTeX editor for writing and publishing academic papers, theses, and technical documents. Includes version control, thousands of templates, and real-time collaboration.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=153940",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-28",
+    "status": "active",
+    "notes": "Sign up with Dartmouth email at overleaf.com; includes Overleaf Professional features",
+    "added_by": "agent",
+    "annual_value": 179,
+    "date_added": "2026-05-28"
+  },
+  {
+    "id": "sibelius",
+    "name": "Sibelius",
+    "category": "software",
+    "description": "Professional music notation software for composing, arranging, and engraving scores. Used by composers, arrangers, and publishers worldwide.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=64743",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-28",
+    "status": "active",
+    "notes": "Sibelius 7 site license; installation instructions in KB article",
+    "added_by": "agent",
+    "annual_value": 169,
+    "date_added": "2026-05-28"
+  },
+  {
+    "id": "stata",
+    "name": "Stata SE",
+    "category": "software",
+    "description": "Professional statistical software for data science, econometrics, and academic research. Includes data manipulation, graphics, and regression analysis.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=64644",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-28",
+    "status": "active",
+    "notes": "Network license; must be on campus network or VPN",
+    "added_by": "agent",
+    "annual_value": 595,
+    "date_added": "2026-05-28"
+  },
+  {
+    "id": "r-rstudio",
+    "name": "R & RStudio Server",
+    "category": "software",
+    "description": "Free statistical computing environment with RStudio Server for data analysis, machine learning, and visualization. Access via web browser or desktop installation.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=155831",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-28",
+    "status": "active",
+    "notes": "RStudio Server at rstudio.dartmouth.edu; also available for local installation",
+    "added_by": "agent",
+    "annual_value": 0,
+    "date_added": "2026-05-28"
+  },
+  {
+    "id": "python-jupyter",
+    "name": "Python, Jupyter, & Anaconda",
+    "category": "software",
+    "description": "JupyterHub server with Python, Anaconda distribution, and data science packages. Web-based environment for notebooks, code, and data analysis.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=155286",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-28",
+    "status": "active",
+    "notes": "JupyterHub at jupyter.dartmouth.edu; includes NumPy, pandas, scikit-learn, TensorFlow",
+    "added_by": "agent",
+    "annual_value": 0,
+    "date_added": "2026-05-28"
+  },
+  {
+    "id": "crashplan",
+    "name": "CrashPlan Backup",
+    "category": "software",
+    "description": "Automatic cloud backup for computers and servers. Continuous data protection with unlimited storage for Dartmouth-owned devices.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=64863",
+    "eligibility": [
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-28",
+    "status": "active",
+    "notes": "For Dartmouth-owned computers only; automatic continuous backup",
+    "added_by": "agent",
+    "annual_value": 120,
+    "date_added": "2026-05-28"
+  },
+  {
+    "id": "linkedin-learning",
+    "name": "LinkedIn Learning",
+    "category": "library",
+    "description": "Unlimited access to 16,000+ online courses covering business, technology, creative skills, and professional development with certificates of completion.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=64717",
+    "eligibility": [
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-28",
+    "status": "active",
+    "notes": "For faculty and staff only; formerly Lynda.com",
+    "added_by": "agent",
+    "annual_value": 300,
+    "date_added": "2026-05-28"
+  },
+  {
+    "id": "docusign",
+    "name": "DocuSign",
+    "category": "software",
+    "description": "Electronic signature platform for secure document signing, approval workflows, and contract management.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/Requests/ServiceDet?ID=32274",
+    "eligibility": [
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-28",
+    "status": "active",
+    "notes": "For official Dartmouth business use; HIPAA compliant",
+    "added_by": "agent",
+    "annual_value": 120,
+    "date_added": "2026-05-28"
+  },
+  {
+    "id": "fastx-remote-desktop",
+    "name": "FastX Remote Desktop",
+    "category": "software",
+    "description": "Remote desktop access to Dartmouth computing resources including Windows and Linux systems. Run graphical applications from anywhere.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=81595",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-28",
+    "status": "active",
+    "notes": "Web-based access at fastx.dartmouth.edu; includes access to Windows 10 and Linux desktops",
+    "added_by": "agent",
+    "annual_value": 80,
+    "date_added": "2026-05-28"
+  },
+  {
+    "id": "mobaxterm",
+    "name": "MobaXterm",
+    "category": "software",
+    "description": "Enhanced terminal for Windows with SSH client, X server, and remote computing tools for connecting to Unix/Linux systems.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=103989",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-28",
+    "status": "active",
+    "notes": "Professional Edition available for free to Dartmouth users",
+    "added_by": "agent",
+    "annual_value": 69,
+    "date_added": "2026-05-28"
+  },
+  {
+    "id": "onbase-ecm",
+    "name": "OnBase ECM",
+    "category": "software",
+    "description": "Enterprise content management system for document storage, workflow automation, and records management.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/Requests/ServiceDet?ID=30892",
+    "eligibility": [
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-28",
+    "status": "active",
+    "notes": "For departments with OnBase access; used for administrative document management",
+    "added_by": "agent",
+    "annual_value": 200,
+    "date_added": "2026-05-28"
+  },
+  {
+    "id": "windows-education",
+    "name": "Windows 10 Education",
+    "category": "software",
+    "description": "Windows 10 Education edition for students' personal and Dartmouth-owned computers. Free download via OnTheHub.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=97413",
+    "eligibility": [
+      "student",
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-28",
+    "status": "active",
+    "notes": "Education edition includes enterprise features; download from Microsoft Azure portal",
+    "added_by": "agent",
+    "annual_value": 0,
+    "date_added": "2026-05-28"
+  },
+  {
+    "id": "crowdstrike",
+    "name": "CrowdStrike Falcon",
+    "category": "software",
+    "description": "Enterprise endpoint protection and antivirus for Dartmouth-owned computers. Cloud-based security platform with threat detection and response.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=108065",
+    "eligibility": [
+      "faculty",
+      "staff"
+    ],
+    "source": "services.dartmouth.edu",
+    "last_verified": "2026-05-28",
+    "status": "active",
+    "notes": "Required for Dartmouth-owned computers; managed by IT",
+    "added_by": "agent",
+    "annual_value": 60,
+    "date_added": "2026-05-28"
+  }
+]

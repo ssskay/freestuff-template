@@ -1,0 +1,191 @@
+/* Hallmark · macrostructure: Catalogue · genre: editorial · theme: Studio (Dartmouth green anchor)
+ * nav: N7 Inline + Wordmark · footer: Ft2 Terse statement
+ * tone: clean editorial · enrichment: none (typography only)
+ */
+
+:root {
+  /* Color — OKLCH palette with Dartmouth green accent */
+  --color-paper: oklch(98% 0 0);
+  --color-paper-2: oklch(96% 0 0);
+  --color-paper-3: oklch(93% 0 0);
+
+  --color-ink: oklch(22% 0 0);
+  --color-ink-muted: oklch(45% 0 0);
+  /* 50% L clears 4.5:1 on paper for small text (was 62% = 3.44:1, failing AA). */
+  --color-ink-subtle: oklch(50% 0 0);
+
+  /* Dartmouth green as primary accent — #00693E converted to OKLCH */
+  --color-accent: oklch(39% 0.11 155);
+  --color-accent-hover: oklch(35% 0.12 155);
+  --color-accent-subtle: oklch(95% 0.02 155);
+
+  --color-focus: oklch(50% 0.15 265);
+  --color-border: oklch(88% 0 0);
+  --color-border-strong: oklch(75% 0 0);
+  /* Form-field boundary: 62% L clears the 3:1 non-text-contrast minimum on paper
+     (the 88% L hairline border is 1.36:1 — fine for dividers, not for inputs). */
+  --color-border-input: oklch(62% 0 0);
+
+  /* Typography */
+  --font-display: 'Newsreader', 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', P052, serif;
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.625rem;
+  --text-3xl: 2rem;
+  --text-4xl: 2.5rem;
+  --text-5xl: 3.25rem;
+
+  --text-display: 2.5rem;
+  --text-display-s: 2rem;
+
+  --leading-tight: 1.15;
+  --leading-snug: 1.35;
+  --leading-normal: 1.55;
+  --leading-relaxed: 1.65;
+
+  --measure: 68ch;
+  --measure-narrow: 55ch;
+  --measure-wide: 80ch;
+
+  /* Spacing — 4pt scale */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  --space-4xl: 8rem;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+  --ease-in: cubic-bezier(0.9, 0, 1, 0.2);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --dur-instant: 0ms;
+  --dur-fast: 150ms;
+  --dur-base: 250ms;
+  --dur-slow: 400ms;
+
+  /* Misc */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+
+  --rule-thin: 1px;
+  --rule-base: 2px;
+}
+
+/* Base resets */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  overflow-x: clip;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-ink);
+  background: var(--color-paper);
+}
+
+/* Focus styles — visible ring, never animated */
+:focus-visible {
+  outline: var(--rule-base) solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* Also remove the decorative hover-lifts so there's zero positional shift.
+     Scoped to specific elements — a blanket `transform: none` would break
+     Leaflet, which positions map markers with transforms. */
+  .resource-card:hover,
+  .scenario-card:hover,
+  .scenario-tile:hover,
+  .pin-place:hover span,
+  .pin-place:focus span {
+    transform: none !important;
+  }
+}
+
+/* Visually hidden, still exposed to assistive tech. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip link: off-screen until focused, then anchored top-left. */
+.skip-link {
+  position: absolute;
+  left: var(--space-2xs);
+  top: -3rem;
+  z-index: 100;
+  padding: var(--space-2xs) var(--space-sm);
+  background: var(--color-accent);
+  color: var(--color-paper);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: top var(--dur-fast) var(--ease-out);
+}
+
+.skip-link:focus {
+  top: var(--space-2xs);
+}
+
+/* Generic toast region for inline status messages (replaces alert/confirm). */
+.toast-region {
+  position: fixed;
+  left: 50%;
+  bottom: var(--space-lg);
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  pointer-events: none;
+}
+
+.toast {
+  padding: var(--space-xs) var(--space-md);
+  background: var(--color-ink);
+  color: var(--color-paper);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}

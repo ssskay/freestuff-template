@@ -1,0 +1,278 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ResourceCard from '../components/ResourceCard.astro';
+import { loadResources } from '../lib/catalog';
+import { categoryLabel } from '../site.config';
+
+// Resolve the catalog (Supabase with static JSON fallback), id = stable slug.
+const allResources = await loadResources();
+const resources = allResources.filter(r => r.eligibility.includes('alumni'));
+
+// Get unique categories
+const categories = [...new Set(resources.map(r => r.category))].sort();
+---
+
+<BaseLayout title="Free Resources for Dartmouth Alumni">
+  <div class="hero-catalogue">
+    <h1 class="hero-title">Welcome back. Your Dartmouth perks didn't expire.</h1>
+    <p class="hero-deck">
+      Most alumni don't realize they still have access to this. <strong>{resources.length} resources</strong> including lifetime library cards, career services, cabin rentals, and alumni-only databases. Your degree keeps giving.
+    </p>
+
+    <!-- Search -->
+    <div class="search-wrapper">
+      <input
+        type="text"
+        id="search"
+        placeholder="Search resources..."
+        class="search-input"
+      />
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-bar">
+      <div class="filter-controls">
+        <div class="filter-group">
+          <label for="category-filter" class="filter-label">Category</label>
+          <select id="category-filter" class="filter-select">
+            <option value="">All categories</option>
+            {categories.map((cat) => (
+              <option value={cat}>{categoryLabel(cat)}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div class="filter-status">
+        <p class="result-count">
+          Showing <span id="result-count">{resources.length}</span>
+        </p>
+        <button id="clear-filters" class="clear-btn">Clear filters</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resource Grid -->
+  <div id="resource-grid" class="resource-grid">
+    {resources.map((resource) => (
+      <div class="resource-item"
+           data-category={resource.category}
+           data-searchable={JSON.stringify({
+             name: resource.name.toLowerCase(),
+             description: resource.description.toLowerCase(),
+             category: resource.category.toLowerCase(),
+           })}>
+        <ResourceCard resource={resource} />
+      </div>
+    ))}
+  </div>
+
+  <div id="no-results" class="no-results hidden">
+    <p class="no-results-text">No resources found matching your filters.</p>
+    <button id="clear-filters-alt" class="clear-btn-alt">Clear filters and try again</button>
+  </div>
+
+  <style>
+    /* Reuse styles from index.astro */
+    .hero-catalogue {
+      max-width: 90rem;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--space-lg) var(--space-2xl);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: var(--text-display);
+      font-weight: 600;
+      line-height: var(--leading-tight);
+      color: var(--color-ink);
+      margin: 0 0 var(--space-md) 0;
+      max-width: var(--measure-narrow);
+    }
+
+    .hero-deck {
+      font-size: var(--text-lg);
+      line-height: var(--leading-relaxed);
+      color: var(--color-ink-muted);
+      margin: 0 0 var(--space-xl) 0;
+      max-width: var(--measure);
+    }
+
+    .hero-deck strong {
+      color: var(--color-ink);
+      font-weight: 600;
+    }
+
+    .search-wrapper {
+      margin-bottom: var(--space-lg);
+    }
+
+    .search-input {
+      width: 100%;
+      padding: var(--space-sm) var(--space-md);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: var(--leading-normal);
+      color: var(--color-ink);
+      background: var(--color-paper);
+      border: var(--rule-thin) solid var(--color-border);
+      border-radius: var(--radius-md);
+      transition: border-color var(--dur-fast) var(--ease-out);
+    }
+
+    .search-input:hover {
+      border-color: var(--color-border-strong);
+    }
+
+    .search-input:focus {
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px var(--color-accent-subtle);
+    }
+
+    .filter-bar {
+      padding: var(--space-lg);
+      background: var(--color-paper-2);
+      border: var(--rule-thin) solid var(--color-border);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-2xl);
+    }
+
+    .filter-controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2xs);
+    }
+
+    .filter-label {
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--color-ink-muted);
+    }
+
+    .filter-select {
+      padding: var(--space-xs) var(--space-sm);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      color: var(--color-ink);
+      background: var(--color-paper);
+      border: var(--rule-thin) solid var(--color-border);
+      border-radius: var(--radius-sm);
+      transition: border-color var(--dur-fast) var(--ease-out);
+    }
+
+    .filter-select:hover {
+      border-color: var(--color-border-strong);
+    }
+
+    .filter-status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: var(--space-md);
+      border-top: var(--rule-thin) solid var(--color-border);
+      gap: var(--space-md);
+      flex-wrap: wrap;
+    }
+
+    .result-count {
+      margin: 0;
+      font-size: var(--text-sm);
+      color: var(--color-ink-muted);
+    }
+
+    .result-count span {
+      font-weight: 600;
+      color: var(--color-ink);
+    }
+
+    .clear-btn,
+    .clear-btn-alt {
+      padding: 0;
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--color-accent);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+
+    .clear-btn:hover,
+    .clear-btn-alt:hover {
+      color: var(--color-accent-hover);
+      text-decoration: underline;
+    }
+
+    .resource-grid {
+      max-width: 90rem;
+      margin: 0 auto;
+      padding: 0 var(--space-lg) var(--space-2xl);
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+      gap: var(--space-lg);
+    }
+
+    .no-results {
+      max-width: 90rem;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--space-lg);
+      text-align: center;
+    }
+
+    .no-results.hidden {
+      display: none;
+    }
+
+    .no-results-text {
+      margin: 0 0 var(--space-md) 0;
+      font-size: var(--text-lg);
+      color: var(--color-ink-muted);
+    }
+
+    @media (max-width: 768px) {
+      .hero-catalogue {
+        padding: var(--space-2xl) var(--space-md) var(--space-xl);
+      }
+
+      .hero-title {
+        font-size: var(--text-3xl);
+      }
+
+      .hero-deck {
+        font-size: var(--text-base);
+      }
+
+      .filter-bar {
+        padding: var(--space-md);
+      }
+
+      .filter-controls {
+        grid-template-columns: 1fr;
+        gap: var(--space-sm);
+      }
+
+      .resource-grid {
+        padding: 0 var(--space-md) var(--space-xl);
+        gap: var(--space-md);
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <script>
+    import { initResourceInteractions } from '../lib/resource-interactions';
+
+    // Upvote + report behavior (shared across all pages).
+    initResourceInteractions();
+  </script>
+</BaseLayout>

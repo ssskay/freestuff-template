@@ -1,0 +1,490 @@
+---
+import type { Resource } from '../lib/catalog';
+
+interface Props {
+  resource: Resource;
+  userVotedIds?: string[];
+}
+
+const { resource, userVotedIds = [] } = Astro.props;
+const hasVoted = userVotedIds.includes(resource.id);
+
+// Destination host, surfaced so the user knows where the outbound link goes.
+let destHost = '';
+try {
+  destHost = new URL(resource.url).hostname.replace(/^www\./, '');
+} catch {
+  destHost = '';
+}
+
+// Check if resource is new (added in last 30 days)
+// Disabled for now since all resources are technically new
+const isNew = false;
+
+// The verification date is a trust signal only while it's recent. If it ages
+// past ~6 months (e.g. the weekly verifier hasn't run), a stale "Verified May
+// 2026" erodes trust more than it builds — fall back to a neutral label.
+// Computed at build time, so it refreshes on every deploy.
+const verifiedAt = new Date(resource.last_verified);
+const monthsSinceVerified = (Date.now() - verifiedAt.getTime()) / (1000 * 60 * 60 * 24 * 30.44);
+const verifiedLabel = Number.isFinite(monthsSinceVerified) && monthsSinceVerified <= 6
+  ? `Verified ${verifiedAt.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}`
+  : 'Community-maintained';
+---
+
+<article class="resource-card">
+  <div class="card-header">
+    <a href={resource.url} target="_blank" rel="noopener noreferrer" class="card-title-link">
+      <h3 class="card-title">{resource.name}</h3>
+    </a>
+    <div class="card-badges">
+      {isNew && <span class="new-badge">New</span>}
+      {resource.annual_value != null && resource.annual_value > 0 && (
+        <span class="value-badge">${resource.annual_value}/yr</span>
+      )}
+      <span class="category-badge" data-category={resource.category}>
+        {resource.category.replace(/-/g, ' ')}
+      </span>
+    </div>
+  </div>
+
+  <p class="card-description">{resource.description}</p>
+
+  {resource.notes && (
+    <p class="card-note">{resource.notes}</p>
+  )}
+
+  <div class="card-meta">
+    <div class="eligibility-tags">
+      {resource.eligibility.map((elig) => (
+        <span class="elig-tag">{elig}</span>
+      ))}
+    </div>
+
+    <div class="card-footer">
+      <div class="footer-left">
+        <button
+          class="upvote-btn"
+          data-resource-id={resource.id}
+          data-voted={hasVoted ? 'true' : 'false'}
+          aria-pressed={hasVoted ? 'true' : 'false'}
+          aria-label={hasVoted ? 'Remove upvote' : 'Upvote this resource'}
+        >
+          <svg class="upvote-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+            <!-- Pine tree icon -->
+            <path d="M8 2L10.5 6H5.5L8 2Z" fill="currentColor" />
+            <path d="M8 5L10.5 9H5.5L8 5Z" fill="currentColor" />
+            <path d="M8 8L11 12H5L8 8Z" fill="currentColor" />
+            <rect x="7" y="12" width="2" height="2" fill="currentColor" />
+          </svg>
+          <span class="upvote-count">{resource.upvotes}</span>
+        </button>
+        <div class="report-wrapper">
+          <button
+            class="report-btn"
+            data-resource-id={resource.id}
+            aria-haspopup="true"
+            aria-expanded="false"
+            aria-controls={`report-menu-${resource.id}`}
+            aria-label="Report an issue with this resource"
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+              <!-- Flag icon -->
+              <path d="M2 1V13M2 1L11 4L2 7V1Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+            Report
+          </button>
+          <div class="report-dropdown" id={`report-menu-${resource.id}`} data-resource-id={resource.id} role="menu" hidden>
+            <div class="report-header">Report an issue</div>
+            <button class="report-option" role="menuitem" data-issue="broken-link">Broken link</button>
+            <button class="report-option" role="menuitem" data-issue="wrong-info">Wrong information</button>
+            <button class="report-option" role="menuitem" data-issue="outdated">Outdated</button>
+            <button class="report-option" role="menuitem" data-issue="eligibility">Wrong eligibility</button>
+            <button class="report-option" role="menuitem" data-issue="other">Other</button>
+          </div>
+        </div>
+        <span class="verified-date">
+          <svg class="verified-check" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.5 6.5L4.5 8.5L9.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          {verifiedLabel}
+        </span>
+      </div>
+      <a href={resource.url} target="_blank" rel="noopener noreferrer" class="visit-link">
+        Get access
+        <svg class="external-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4.5 2H10V7.5M10 2L5 7M9 8.5V10H2V3H3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        {destHost && <span class="visit-domain sr-only">(opens {destHost})</span>}
+      </a>
+    </div>
+  </div>
+</article>
+
+<style>
+  .resource-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding: var(--space-lg);
+    background: var(--color-paper);
+    border: var(--rule-thin) solid var(--color-border);
+    border-radius: var(--radius-md);
+    transition: border-color var(--dur-fast) var(--ease-out),
+                transform var(--dur-fast) var(--ease-out);
+  }
+
+  .resource-card:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-sm);
+  }
+
+  .card-badges {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xs);
+    align-items: flex-end;
+    flex-shrink: 0;
+  }
+
+  .card-title-link {
+    text-decoration: none;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .card-title {
+    margin: 0;
+    /* Upright (not italic) so repeated catalog titles read as data, not as
+       dozens of competing headlines, and stay legible at small sizes. */
+    font-family: var(--font-display);
+    font-style: normal;
+    font-size: var(--text-xl);
+    font-weight: 600;
+    line-height: var(--leading-snug);
+    color: var(--color-ink);
+    transition: color var(--dur-fast) var(--ease-out);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  .card-title-link:hover .card-title {
+    color: var(--color-accent);
+  }
+
+  .new-badge {
+    padding: var(--space-3xs) var(--space-xs);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-paper);
+    background: var(--color-accent);
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+  }
+
+  .value-badge {
+    padding: var(--space-3xs) var(--space-xs);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    font-family: var(--font-mono, monospace);
+    color: var(--color-accent);
+    background: var(--color-accent-subtle);
+    border: var(--rule-thin) solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+  }
+
+  .category-badge {
+    padding: var(--space-3xs) var(--space-xs);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    text-transform: capitalize;
+    color: var(--color-ink-muted);
+    background: var(--color-paper-3);
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+  }
+
+  /* Per-category tint so categories are scannable at a glance across the grid.
+     Backgrounds are 92% L pastels; ink-muted text clears contrast on all. */
+  .category-badge[data-category="software"] { background: oklch(92% 0.03 240); }
+  .category-badge[data-category="news"] { background: oklch(92% 0.03 25); }
+  .category-badge[data-category="library"] { background: oklch(92% 0.03 155); }
+  .category-badge[data-category="outdoor"] { background: oklch(92% 0.04 135); }
+  .category-badge[data-category="money"] { background: oklch(92% 0.04 85); }
+  .category-badge[data-category="health"] { background: oklch(92% 0.03 350); }
+  .category-badge[data-category="career"] { background: oklch(92% 0.03 280); }
+  .category-badge[data-category="campus-life"] { background: oklch(92% 0.03 320); }
+  .category-badge[data-category="alumni-only"] { background: oklch(92% 0.03 265); }
+  .category-badge[data-category="tuck"] { background: oklch(92% 0.04 50); }
+  .category-badge[data-category="transportation"] { background: oklch(92% 0.03 200); }
+  .category-badge[data-category="off-campus"] { background: oklch(92% 0.04 15); }
+
+  .card-description {
+    margin: 0;
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-ink-muted);
+  }
+
+  .card-note {
+    margin: 0;
+    padding: var(--space-xs) var(--space-sm);
+    font-size: var(--text-sm);
+    font-style: italic;
+    line-height: var(--leading-normal);
+    color: var(--color-ink-subtle);
+    background: var(--color-accent-subtle);
+    border-left: var(--rule-base) solid var(--color-accent);
+    border-radius: var(--radius-sm);
+  }
+
+  .card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-top: auto;
+    padding-top: var(--space-sm);
+  }
+
+  .eligibility-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+  }
+
+  .elig-tag {
+    padding: var(--space-3xs) var(--space-xs);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    text-transform: capitalize;
+    color: var(--color-ink);
+    background: var(--color-paper-2);
+    border: var(--rule-thin) solid var(--color-border);
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .upvote-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3xs);
+    padding: var(--space-3xs) var(--space-xs);
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--color-ink-muted);
+    background: var(--color-paper-2);
+    border: var(--rule-thin) solid var(--color-border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--dur-fast) var(--ease-out);
+    white-space: nowrap;
+  }
+
+  .upvote-btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: var(--color-accent-subtle);
+  }
+
+  .upvote-btn[data-voted="true"] {
+    color: var(--color-accent);
+    background: var(--color-accent-subtle);
+    border-color: var(--color-accent);
+  }
+
+  .upvote-btn[data-voted="true"] .upvote-icon {
+    color: var(--color-accent);
+  }
+
+  .upvote-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .upvote-icon {
+    width: 16px;
+    height: 16px;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+
+  .upvote-count {
+    min-width: 1.5ch;
+    text-align: center;
+  }
+
+  .verified-date {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3xs);
+    font-size: var(--text-xs);
+    color: var(--color-ink-muted);
+  }
+
+  .verified-check {
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+
+  .report-wrapper {
+    position: relative;
+  }
+
+  .report-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3xs);
+    padding: var(--space-3xs) var(--space-xs);
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--color-ink-subtle);
+    background: var(--color-paper);
+    border: var(--rule-thin) solid var(--color-border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--dur-fast) var(--ease-out);
+    white-space: nowrap;
+  }
+
+  .report-btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .report-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .report-dropdown[hidden] {
+    display: none;
+  }
+
+  .report-dropdown {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    margin-bottom: var(--space-2xs);
+    min-width: 180px;
+    background: var(--color-paper);
+    border: var(--rule-thin) solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+  }
+
+  .report-header {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--color-ink-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: var(--rule-thin) solid var(--color-border);
+  }
+
+  .report-option {
+    display: block;
+    width: 100%;
+    padding: var(--space-xs) var(--space-sm);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    text-align: left;
+    color: var(--color-ink);
+    background: none;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-out);
+  }
+
+  .report-option:first-of-type {
+    border-top-left-radius: var(--radius-md);
+    border-top-right-radius: var(--radius-md);
+  }
+
+  .report-option:last-child {
+    border-bottom-left-radius: var(--radius-md);
+    border-bottom-right-radius: var(--radius-md);
+  }
+
+  .report-option:hover {
+    background: var(--color-accent-subtle);
+    color: var(--color-accent);
+  }
+
+  /* Primary action: a filled button so "get access" is the clear next step,
+     visually dominant over the secondary upvote/report controls. */
+  .visit-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3xs);
+    padding: var(--space-2xs) var(--space-sm);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-paper);
+    background: var(--color-accent);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: background var(--dur-fast) var(--ease-out);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .visit-link:hover {
+    background: var(--color-accent-hover);
+  }
+
+  .external-icon {
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    .resource-card {
+      padding: var(--space-md);
+    }
+
+    .card-title {
+      font-size: var(--text-lg);
+    }
+
+    .card-description {
+      font-size: var(--text-sm);
+    }
+
+    /* Primary action spans the card on phones for an unmissable tap target. */
+    .visit-link {
+      width: 100%;
+      justify-content: center;
+      padding: var(--space-xs) var(--space-sm);
+    }
+  }
+</style>

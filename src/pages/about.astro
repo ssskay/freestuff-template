@@ -1,0 +1,334 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../site.config';
+---
+
+<BaseLayout title="About | Free Stuff @ Dartmouth" description="Learn about Free Stuff @ Dartmouth and how to fork this for your school">
+  <article class="about-page">
+    <h1 class="about-title">About This Project</h1>
+
+    <div class="about-content">
+      <section class="about-section">
+        <h2 class="section-head">The Thesis</h2>
+        <p>
+          Dartmouth students and alumni already pay for an enormous amount of stuff and don't use most of it.
+          Tuition, fees, and alumni dues fund software licenses, news subscriptions, library databases,
+          outdoor gear rentals, professional development resources, and lifelong perks — but the catalog of
+          "what you actually get" is fragmented across dozens of pages, hard to discover, and goes stale fast.
+        </p>
+        <p class="text-gray-700 mb-4">
+          This site is the catalog. The mission is a complete, public, always-current list of free perks
+          available to Dartmouth students and alumni — with a working link, eligibility tag, and a
+          "last verified" date on every entry.
+        </p>
+      </section>
+
+      <section class="about-section">
+        <h2 class="section-head">Why Now?</h2>
+        <p>
+          A previous version of this idea existed around 2018-2019 and died because maintenance was a nightmare.
+          Links rotted. New perks weren't added. The site became less useful than just googling.
+        </p>
+        <p>
+          What's different: <strong>an agent can maintain it</strong>. Three small agents — one to verify existing entries,
+          one to discover new ones, one to draft entries from raw URLs — running on a schedule, opening PRs that
+          a human reviews and merges. The maintenance burden goes from "hours per week of unpaid drudgery" to
+          "ten minutes of PR review on a Sunday."
+        </p>
+        <p>
+          This site is also a deliberate test case for agent-maintained catalogs. If a small agent fleet can
+          keep a public-facing site fresh and accurate with minimal human oversight, the same pattern applies
+          to dozens of other catalogs.
+        </p>
+      </section>
+
+      <section class="about-section">
+        <h2 class="section-head">What's Not Here</h2>
+        <ul class="list-plain">
+          <li>Third-party student discounts — only Dartmouth-specific perks</li>
+          <li>Expired or broken perks (flagged and removed)</li>
+          <li>Pay-for-placement — no business can buy its way onto this list, rank higher, or be marked "Verified"</li>
+          <li>Login walls — no account is required to browse</li>
+        </ul>
+        <p>
+          Community submissions <em>are</em> welcome and reviewed before publishing (see
+          <a href="/submit" class="inline-link">Submit</a>). We collect an optional email only if you
+          choose to give it when submitting or reporting a resource — see our
+          <a href="/privacy" class="inline-link">Privacy Policy</a>.
+        </p>
+      </section>
+
+      <section class="about-section">
+        <h2 class="section-head">How This Is Funded</h2>
+        <p>
+          Two things, kept strictly separate:
+        </p>
+        <ul class="list-plain">
+          <li>
+            <strong>The catalog is editorial and free.</strong> It costs almost nothing to run (it's a static
+            site), it carries no ads, and — as noted above — nothing in it is ever for sale.
+          </li>
+          <li>
+            <strong>The project's costs may be covered by a supporter.</strong> If they ever are, that supporter
+            is shown only in the footer, clearly labeled, as backing for the project — not a spot in the
+            catalog. A supporter can never add an entry, change its ranking, or affect what's listed.
+          </li>
+        </ul>
+        <p>
+          No targeted ads, no third-party trackers, no selling your data. Independent of Dartmouth College —
+          see our <a href="/privacy" class="inline-link">Privacy Policy</a> and
+          <a href="/terms" class="inline-link">Terms</a>.
+        </p>
+      </section>
+
+      <section class="about-section">
+        <h2 class="section-head">How to Report Issues</h2>
+        <p>
+          Found a broken link or know about a perk that's missing?
+          <a href={`${SITE.github}/issues`} class="inline-link">Open an issue on GitHub</a> with the details. We review reports regularly.
+        </p>
+      </section>
+
+      <section class="fork-callout">
+        <h2 class="section-head-inverse">Fork This for Your School</h2>
+        <p>
+          This project is open source and designed to be easily adapted for other schools. The architecture
+          is a static Astro site, with an optional Supabase backend powering upvotes, reports, and community
+          submissions. Forks can run pure-JSON with no backend at all.
+        </p>
+        <p>
+          <strong>To fork this for your school:</strong>
+        </p>
+        <ol class="fork-steps">
+          <li>Fork the <a href={SITE.github} class="inline-link-inverse">GitHub repo</a></li>
+          <li>Update <code>src/content/resources.json</code> with your school's perks</li>
+          <li>Set your school's name and links in <code>src/site.config.ts</code></li>
+          <li>Customize the accent color in <code>public/tokens.css</code> (the <code>--color-accent</code> token)</li>
+          <li>Deploy to Vercel or Netlify (free)</li>
+        </ol>
+        <p>
+          The entire site is yours to modify. If you build one for your school, let us know — we'd love to see it.
+        </p>
+      </section>
+
+      <section class="about-section">
+        <h2 class="section-head">Technical Details</h2>
+        <p>
+          Built with <a href="https://astro.build" class="inline-link">Astro</a> and
+          <a href="https://tailwindcss.com" class="inline-link">Tailwind CSS</a>.
+          Deployed on <a href="https://vercel.com" class="inline-link">Vercel</a>.
+          Agent maintenance (coming in v2) will use Python and Claude Sonnet 4.5.
+        </p>
+        <p>
+          Source code available on <a href={SITE.github} class="inline-link">GitHub</a>.
+        </p>
+      </section>
+
+      <section class="about-section">
+        <h2 class="section-head">Contact</h2>
+        <p>
+          Built by Dartmouth folks, for Dartmouth folks. Questions or feedback?
+          <a href={`${SITE.github}/issues`} class="inline-link">Open an issue on GitHub</a>.
+        </p>
+      </section>
+    </div>
+
+    <div class="back-link-wrapper">
+      <a href="/" class="back-link">← Back to Resources</a>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .about-page {
+    max-width: var(--measure);
+    margin: 0 auto;
+    padding: var(--space-3xl) var(--space-lg) var(--space-2xl);
+  }
+
+  .about-title {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--text-5xl);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+    color: var(--color-ink);
+    margin: 0 0 var(--space-2xl) 0;
+  }
+
+  .about-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+  }
+
+  .about-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .section-head {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--text-2xl);
+    font-weight: 600;
+    line-height: var(--leading-snug);
+    color: var(--color-ink);
+    margin: 0;
+  }
+
+  .section-head-inverse {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--text-2xl);
+    font-weight: 600;
+    line-height: var(--leading-snug);
+    color: var(--color-paper);
+    margin: 0 0 var(--space-md) 0;
+  }
+
+  .about-section p,
+  .fork-callout p {
+    margin: 0;
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-ink-muted);
+  }
+
+  .fork-callout p {
+    color: var(--color-paper-2);
+  }
+
+  .about-section strong,
+  .fork-callout strong {
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .fork-callout strong {
+    color: var(--color-paper);
+  }
+
+  .inline-link {
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+
+  .inline-link:hover {
+    color: var(--color-accent-hover);
+    text-decoration: underline;
+  }
+
+  .inline-link-inverse {
+    color: var(--color-paper);
+    text-decoration: underline;
+    font-weight: 500;
+    transition: opacity var(--dur-fast) var(--ease-out);
+  }
+
+  .inline-link-inverse:hover {
+    opacity: 0.85;
+  }
+
+  .list-plain {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .list-plain li {
+    padding-left: var(--space-md);
+    position: relative;
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-ink-muted);
+  }
+
+  .list-plain li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .fork-callout {
+    padding: var(--space-xl);
+    background: var(--color-accent);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .fork-steps {
+    margin: 0;
+    padding: 0 0 0 var(--space-lg);
+    list-style: decimal;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .fork-steps li {
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-paper-2);
+    padding-left: var(--space-2xs);
+  }
+
+  .fork-steps code {
+    padding: var(--space-3xs) var(--space-xs);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-ink);
+    background: var(--color-paper);
+    border-radius: var(--radius-sm);
+  }
+
+  .back-link-wrapper {
+    margin-top: var(--space-3xl);
+    text-align: center;
+  }
+
+  .back-link {
+    display: inline-block;
+    padding: var(--space-sm) var(--space-lg);
+    font-size: var(--text-base);
+    font-weight: 500;
+    color: var(--color-paper);
+    background: var(--color-accent);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: background var(--dur-fast) var(--ease-out);
+  }
+
+  .back-link:hover {
+    background: var(--color-accent-hover);
+  }
+
+  @media (max-width: 768px) {
+    .about-page {
+      padding: var(--space-2xl) var(--space-md) var(--space-xl);
+    }
+
+    .about-title {
+      font-size: var(--text-4xl);
+    }
+
+    .section-head,
+    .section-head-inverse {
+      font-size: var(--text-xl);
+    }
+
+    .fork-callout {
+      padding: var(--space-lg);
+    }
+  }
+</style>

@@ -1,0 +1,236 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../site.config';
+
+const lastUpdated = 'June 3, 2026';
+---
+
+<BaseLayout title="Privacy Policy | Free Stuff @ Dartmouth" description="What Free Stuff @ Dartmouth collects, and what it doesn't.">
+  <article class="doc-page">
+    <h1 class="doc-title">Privacy Policy</h1>
+    <p class="doc-meta">Last updated {lastUpdated}</p>
+
+    <div class="doc-content">
+      <section class="doc-section">
+        <p>
+          Free Stuff @ Dartmouth is a free, independent catalog. The short version: we don't run ads, we
+          don't use cookies or cross-site trackers, and we don't sell your data. We use only privacy-friendly,
+          cookieless analytics to see which resources are useful, and we collect the minimum needed for upvotes
+          and community submissions — all described below.
+        </p>
+      </section>
+
+      <section class="doc-section">
+        <h2 class="section-head">What we collect</h2>
+        <ul class="doc-list">
+          <li>
+            <strong>Upvotes.</strong> When you upvote a resource, your browser stores a random voter ID in
+            <code>localStorage</code> (it is not tied to your name, account, or device characteristics). That ID
+            and the resources you upvoted are saved so a resource isn't counted twice.
+          </li>
+          <li>
+            <strong>Resource submissions.</strong> If you use the <a href="/submit" class="inline-link">Submit</a>
+            form, we store the resource details you enter. An email is <strong>optional</strong> — we only keep it
+            if you choose to provide it, and only to credit you or follow up on your submission.
+          </li>
+          <li>
+            <strong>Issue reports.</strong> When you report a problem with a resource, we store only the issue
+            type and which resource it's about. No personal information is collected.
+          </li>
+          <li>
+            <strong>Aggregate analytics.</strong> We use Vercel Web Analytics, a cookieless and privacy-friendly
+            service, to count page views and see which resources people find useful. It does not set cookies,
+            does not follow you across other sites, and does not collect personal information or build a profile
+            of you.
+          </li>
+          <li>
+            <strong>Newsletter (optional).</strong> If you sign up for the newsletter, we store your email to send
+            it. We use it for nothing else, never sell or share it, and you can unsubscribe from any issue.
+          </li>
+        </ul>
+      </section>
+
+      <section class="doc-section">
+        <h2 class="section-head">What we don't do</h2>
+        <ul class="doc-list">
+          <li>No advertising and no paid placement in the catalog.</li>
+          <li>No advertising or marketing trackers, no tracking pixels, no cookies, and no cross-site or behavioral profiling.</li>
+          <li>No selling, renting, or sharing of your data with advertisers or data brokers.</li>
+          <li>No unsolicited email. We email you only if you opt in to the newsletter, and every issue has a one-click unsubscribe.</li>
+        </ul>
+      </section>
+
+      <section class="doc-section">
+        <h2 class="section-head">Where data is stored</h2>
+        <p>
+          The site is hosted on <a href="https://vercel.com" class="inline-link">Vercel</a> and uses
+          <a href="https://supabase.com" class="inline-link">Supabase</a> to store upvotes, reports, and
+          submissions. These providers may process standard technical information (such as IP address in server
+          logs) to operate and secure the service. We do not combine that with your activity to identify you.
+        </p>
+      </section>
+
+      <section class="doc-section">
+        <h2 class="section-head">Your choices</h2>
+        <ul class="doc-list">
+          <li>To reset your voter ID, clear your browser's site data for this site.</li>
+          <li>To browse with no data collected at all, simply don't upvote, submit, or report.</li>
+          <li>
+            To have a submission or its email removed, open an issue on
+            <a href={`${SITE.github}/issues`} class="inline-link">GitHub</a>
+            and we'll delete it.
+          </li>
+        </ul>
+      </section>
+
+      <section class="doc-section">
+        <h2 class="section-head">Changes</h2>
+        <p>
+          If we ever add advertising or a newsletter, we will update this policy first, add a clear notice and
+          consent where required, and keep the catalog free of cross-site trackers. Material changes will be
+          reflected in the "last updated" date above.
+        </p>
+      </section>
+
+      <section class="doc-section">
+        <h2 class="section-head">Contact</h2>
+        <p>
+          Questions? Open an issue on
+          <a href={`${SITE.github}/issues`} class="inline-link">GitHub</a>.
+        </p>
+      </section>
+    </div>
+
+    <div class="back-link-wrapper">
+      <a href="/" class="back-link">← Back to Resources</a>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .doc-page {
+    max-width: var(--measure);
+    margin: 0 auto;
+    padding: var(--space-3xl) var(--space-lg) var(--space-2xl);
+  }
+
+  .doc-title {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--text-5xl);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+    color: var(--color-ink);
+    margin: 0 0 var(--space-2xs) 0;
+  }
+
+  .doc-meta {
+    margin: 0 0 var(--space-2xl) 0;
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .doc-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+  }
+
+  .doc-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .section-head {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--text-2xl);
+    font-weight: 600;
+    line-height: var(--leading-snug);
+    color: var(--color-ink);
+    margin: 0;
+  }
+
+  .doc-section p {
+    margin: 0;
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-ink-muted);
+  }
+
+  .doc-section strong {
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .doc-list {
+    margin: 0;
+    padding: 0 0 0 var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .doc-list li {
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-ink-muted);
+  }
+
+  .inline-link {
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+
+  .inline-link:hover {
+    color: var(--color-accent-hover);
+    text-decoration: underline;
+  }
+
+  code {
+    padding: var(--space-3xs) var(--space-2xs);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-ink);
+    background: var(--color-paper-2);
+    border-radius: var(--radius-sm);
+  }
+
+  .back-link-wrapper {
+    margin-top: var(--space-3xl);
+    text-align: center;
+  }
+
+  .back-link {
+    display: inline-block;
+    padding: var(--space-sm) var(--space-lg);
+    font-size: var(--text-base);
+    font-weight: 500;
+    color: var(--color-paper);
+    background: var(--color-accent);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: background var(--dur-fast) var(--ease-out);
+  }
+
+  .back-link:hover {
+    background: var(--color-accent-hover);
+  }
+
+  @media (max-width: 768px) {
+    .doc-page {
+      padding: var(--space-2xl) var(--space-md) var(--space-xl);
+    }
+
+    .doc-title {
+      font-size: var(--text-4xl);
+    }
+
+    .section-head {
+      font-size: var(--text-xl);
+    }
+  }
+</style>

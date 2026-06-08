@@ -1,0 +1,220 @@
+---
+import Analytics from '@vercel/analytics/astro';
+import { SITE } from '../site.config';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Social-share image, resolved against the site origin. Defaults to /og.png. */
+  image?: string;
+}
+
+const { title, description = `A complete, always-current catalog of free perks available to ${SITE.school} students and alumni.`, image = "/og.png" } = Astro.props;
+
+// Absolute URLs for canonical + Open Graph (share cards need full origins).
+// Astro.site is set in astro.config; fall back gracefully if a page renders
+// outside a configured site.
+const siteOrigin = Astro.site ?? new URL(Astro.url.origin);
+const canonicalURL = new URL(Astro.url.pathname, siteOrigin);
+const imageURL = new URL(image, siteOrigin);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/tokens.css" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Open Graph / Twitter: links shared in GroupMe, iMessage, Slack render
+         as a real card instead of a naked URL — this site grows by word of mouth. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={imageURL} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageURL} />
+
+    <title>{title}</title>
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <!-- Nav: N7 Inline + Wordmark -->
+    <header>
+      <nav class="nav-inline" aria-label="Primary">
+        <div class="nav-container">
+          <a href="/" class="wordmark">{SITE.name}</a>
+          <div class="nav-links">
+            <a href="/for-students" class="nav-link">Students</a>
+            <a href="/for-alumni" class="nav-link">Alumni</a>
+            <a href="/scenarios" class="nav-link">Scenarios</a>
+            <a href="/map" class="nav-link">Map</a>
+            <a href="/submit" class="nav-link">Submit</a>
+            <a href="/about" class="nav-link">About</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+
+    <!-- Footer: Ft2 Terse statement -->
+    <footer class="footer-terse">
+      <div class="footer-container">
+        <p>Built by {SITE.school} folks, for {SITE.school} folks. <a href={SITE.github} class="footer-link">Fork this for your school</a>.</p>
+        <p class="footer-disclosure">An independent, community-maintained catalog — not an official {SITE.school} site. Always verify access details on the linked {SITE.school} page.</p>
+        <p class="footer-links">
+          <a href="/privacy" class="footer-link">Privacy</a> ·
+          <a href="/terms" class="footer-link">Terms</a> ·
+          <a href="/about" class="footer-link">About</a>
+        </p>
+      </div>
+    </footer>
+
+    <!-- Inline status messages (replaces native alert/confirm) -->
+    <div id="toast-region" class="toast-region" role="status" aria-live="polite"></div>
+
+    <!-- Cookieless, privacy-friendly aggregate analytics (see /privacy) -->
+    <Analytics />
+
+    <style>
+      /* Nav: N7 Inline + Wordmark */
+      .nav-inline {
+        border-top: 4px solid var(--color-accent);
+        border-bottom: var(--rule-thin) solid var(--color-border);
+        background: var(--color-paper);
+      }
+
+      .nav-container {
+        max-width: 90rem;
+        margin: 0 auto;
+        padding: var(--space-md) var(--space-lg);
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: var(--space-md);
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: baseline;
+        gap: var(--space-md);
+      }
+
+      .wordmark {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-size: var(--text-xl);
+        font-weight: 600;
+        color: var(--color-accent);
+        text-decoration: none;
+        transition: color var(--dur-fast) var(--ease-out);
+      }
+
+      .wordmark:hover {
+        color: var(--color-accent-hover);
+      }
+
+      .nav-link {
+        font-size: var(--text-base);
+        color: var(--color-ink-muted);
+        text-decoration: none;
+        transition: color var(--dur-fast) var(--ease-out);
+        white-space: nowrap;
+      }
+
+      .nav-link:hover {
+        color: var(--color-accent);
+      }
+
+      @media (max-width: 768px) {
+        /* Let the wordmark + 6 links wrap instead of crowding into one shrinking
+           row — on a narrow phone the links drop to a second line under the
+           wordmark rather than colliding with it. */
+        .nav-container {
+          padding: var(--space-sm) var(--space-md);
+          gap: var(--space-2xs) var(--space-sm);
+          flex-wrap: wrap;
+          align-items: center;
+        }
+
+        .nav-links {
+          flex-wrap: wrap;
+          gap: var(--space-2xs) var(--space-md);
+        }
+
+        .wordmark {
+          font-size: var(--text-lg);
+        }
+
+        .nav-link {
+          font-size: var(--text-sm);
+        }
+      }
+
+      /* Footer: Ft2 Terse statement */
+      .footer-terse {
+        margin-top: var(--space-4xl);
+        padding: var(--space-xl) var(--space-lg);
+        border-top: var(--rule-thin) solid var(--color-border);
+        background: var(--color-paper-2);
+      }
+
+      .footer-container {
+        max-width: 90rem;
+        margin: 0 auto;
+      }
+
+      .footer-terse p {
+        margin: 0;
+        font-size: var(--text-sm);
+        color: var(--color-ink-muted);
+        line-height: var(--leading-relaxed);
+      }
+
+      .footer-disclosure {
+        margin-top: var(--space-2xs) !important;
+        font-size: var(--text-xs) !important;
+        color: var(--color-ink-subtle) !important;
+      }
+
+      .footer-links {
+        margin-top: var(--space-xs) !important;
+        font-size: var(--text-sm) !important;
+      }
+
+      .footer-link {
+        color: var(--color-accent);
+        text-decoration: none;
+        transition: color var(--dur-fast) var(--ease-out);
+      }
+
+      .footer-link:hover {
+        color: var(--color-accent-hover);
+        text-decoration: underline;
+      }
+
+      @media (max-width: 768px) {
+        .footer-terse {
+          padding: var(--space-lg) var(--space-md);
+        }
+      }
+    </style>
+  </body>
+</html>

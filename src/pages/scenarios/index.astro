@@ -1,0 +1,163 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ScenarioIcon from '../../components/ScenarioIcon.astro';
+import { SCENARIO_CARDS } from '../../site.config';
+---
+
+<BaseLayout title="Scenarios | Free Stuff @ Dartmouth">
+  <div class="scenarios-page">
+    <div class="scenarios-hero">
+      <h1 class="page-title">Find what you need by situation</h1>
+      <p class="page-deck">
+        Not sure where to start? Pick the situation that fits — each one pulls together the
+        Dartmouth perks that actually matter for it.
+      </p>
+    </div>
+
+    <div class="scenarios-grid">
+      {SCENARIO_CARDS.map((s) => (
+        <a href={`/scenarios/${s.slug}`} class="scenario-card">
+          <div class="scenario-icon"><ScenarioIcon slug={s.slug} /></div>
+          <h2 class="scenario-title">{s.title}</h2>
+          <p class="scenario-description">{s.blurb}</p>
+          <div class="scenario-cta">View resources →</div>
+        </a>
+      ))}
+    </div>
+
+    <div class="cta-section">
+      <p class="cta-text">Want to see everything?</p>
+      <a href="/" class="cta-button">Browse the full catalog</a>
+    </div>
+  </div>
+
+  <style>
+    .scenarios-page {
+      max-width: 90rem;
+      margin: 0 auto;
+      padding: var(--space-3xl) var(--space-lg) var(--space-2xl);
+    }
+
+    .scenarios-hero {
+      max-width: var(--measure);
+      margin: 0 auto var(--space-2xl);
+      text-align: center;
+    }
+
+    .page-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: var(--text-display);
+      font-weight: 600;
+      line-height: var(--leading-tight);
+      color: var(--color-ink);
+      margin: 0 0 var(--space-md) 0;
+    }
+
+    .page-deck {
+      font-size: var(--text-lg);
+      line-height: var(--leading-relaxed);
+      color: var(--color-ink-muted);
+      margin: 0;
+    }
+
+    .scenarios-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+      gap: var(--space-md);
+    }
+
+    .scenario-card {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      padding: var(--space-lg);
+      text-align: left;
+      text-decoration: none;
+      background: var(--color-paper);
+      border: var(--rule-base) solid var(--color-border);
+      border-radius: var(--radius-md);
+      transition: all var(--dur-fast) var(--ease-out);
+    }
+
+    .scenario-card:hover {
+      border-color: var(--color-accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .scenario-icon {
+      font-size: var(--text-3xl);
+      line-height: 1;
+    }
+
+    .scenario-title {
+      margin: 0;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: var(--text-lg);
+      font-weight: 600;
+      line-height: var(--leading-snug);
+      color: var(--color-ink);
+    }
+
+    .scenario-description {
+      margin: 0;
+      font-size: var(--text-sm);
+      line-height: var(--leading-relaxed);
+      color: var(--color-ink-muted);
+      flex: 1;
+    }
+
+    .scenario-cta {
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--color-accent);
+    }
+
+    .cta-section {
+      max-width: var(--measure);
+      margin: var(--space-3xl) auto 0;
+      text-align: center;
+      padding-top: var(--space-2xl);
+      border-top: var(--rule-thin) solid var(--color-border);
+    }
+
+    .cta-text {
+      margin: 0 0 var(--space-md) 0;
+      font-size: var(--text-lg);
+      color: var(--color-ink-muted);
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: var(--space-sm) var(--space-lg);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      font-weight: 600;
+      color: var(--color-paper);
+      background: var(--color-accent);
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      transition: background var(--dur-fast) var(--ease-out);
+    }
+
+    .cta-button:hover {
+      background: var(--color-accent-hover);
+    }
+
+    @media (max-width: 768px) {
+      .scenarios-page {
+        padding: var(--space-2xl) var(--space-md) var(--space-xl);
+      }
+
+      .page-title {
+        font-size: var(--text-3xl);
+      }
+
+      .scenarios-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</BaseLayout>
