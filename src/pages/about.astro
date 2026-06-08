@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../site.config';
 ---
 
-<BaseLayout title="About | Free Stuff @ Dartmouth" description="Learn about Free Stuff @ Dartmouth and how to fork this for your school">
+<BaseLayout title={`About | ${SITE.name}`} description={`Learn about ${SITE.name} and how to fork this for your school`}>
   <article class="about-page">
     <h1 class="about-title">About This Project</h1>
 

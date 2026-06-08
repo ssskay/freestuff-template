@@ -26,7 +26,15 @@ export const SITE = {
   url: 'https://freestuff-dartmouth.vercel.app',
   /** Public repo — used for the "fork this" + "report an issue" links. */
   github: 'https://github.com/ssskay/freestuff-dartmouth-v2',
+  /** School email domain, used for form placeholders. Pack value: your school's domain. */
+  emailDomain: 'dartmouth.edu',
 } as const;
+
+/**
+ * Bounding box that all geocoded resources must fall within — the catalog-data
+ * test asserts every pin is inside it. Pack value: set to your campus's box.
+ */
+export const CAMPUS_BOUNDS = { minLat: 43.69, maxLat: 43.72, minLng: -72.31, maxLng: -72.27 } as const;
 
 /** Allowed resource categories. Mirrors the DB category constraint. */
 export const CATEGORIES = [

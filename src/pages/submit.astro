@@ -1,12 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { CATEGORIES, ELIGIBILITY, categoryLabel } from '../site.config';
+import { SITE, CATEGORIES, ELIGIBILITY, categoryLabel } from '../site.config';
 
 const categories = CATEGORIES;
 const eligibilityOptions = ELIGIBILITY;
 ---
 
-<BaseLayout title="Submit a Resource | Free Stuff @ Dartmouth">
+<BaseLayout title={`Submit a Resource | ${SITE.name}`}>
   <div class="submit-page">
     <div class="submit-header">
       <h1 class="page-title">Submit a free resource</h1>
@@ -114,7 +114,7 @@ const eligibilityOptions = ELIGIBILITY;
           id="submitted_by"
           name="submitted_by"
           class="form-input"
-          placeholder="you@dartmouth.edu"
+          placeholder={`you@${SITE.emailDomain}`}
         />
         <span class="form-hint">Optional, but we'll credit you if you want!</span>
       </div>

@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ResourceCard from '../components/ResourceCard.astro';
 import { loadResources } from '../lib/catalog';
-import { categoryLabel } from '../site.config';
+import { SITE, categoryLabel } from '../site.config';
 
 // Resolve the catalog (Supabase with static JSON fallback), id = stable slug.
 const allResources = await loadResources();
@@ -17,7 +17,7 @@ const totalValue = resources
   .reduce((sum, r) => sum + (r.annual_value as number), 0);
 ---
 
-<BaseLayout title="Free Resources for Dartmouth Students">
+<BaseLayout title={`Free Resources for ${SITE.school} Students`}>
   <div class="hero-catalogue">
     <h1 class="hero-title">You're paying $80K a year. Here's what that actually gets you.</h1>
     <p class="hero-deck">

@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ResourceCard from '../components/ResourceCard.astro';
 import { loadResources } from '../lib/catalog';
-import { CURATED_COLLECTIONS, categoryLabel } from '../site.config';
+import { SITE, CURATED_COLLECTIONS, categoryLabel } from '../site.config';
 import ScenarioIcon from '../components/ScenarioIcon.astro';
 import NewsletterSignup from '../components/NewsletterSignup.astro';
 
@@ -38,11 +38,11 @@ const totalValue = resources
   .reduce((sum, r) => sum + (r.annual_value as number), 0);
 ---
 
-<BaseLayout title="Free Stuff @ Dartmouth">
+<BaseLayout title={SITE.name}>
   <div class="hero-catalogue">
     <h1 class="hero-title">Your complete catalog of free perks</h1>
     <p class="hero-deck">
-      Dartmouth students and alumni pay for way more than they use. This is everything you already have access to — <strong>{resources.length} verified resources</strong> across software, news, libraries, outdoor gear, career services, and more.
+      {SITE.school} students and alumni pay for way more than they use. This is everything you already have access to — <strong>{resources.length} verified resources</strong> across software, news, libraries, outdoor gear, career services, and more.
     </p>
 
     <!-- Search -->
@@ -60,7 +60,7 @@ const totalValue = resources
         autocomplete="off"
       />
     </div>
-    <p class="access-note">Most perks need your Dartmouth NetID login. Each card shows who's eligible.</p>
+    <p class="access-note">Most perks need your {SITE.school} login. Each card shows who's eligible.</p>
 
     <!-- Curated collections (a separate axis from raw categories) -->
     <div class="collection-chips" role="group" aria-label="Curated collections">

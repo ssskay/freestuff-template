@@ -12,6 +12,11 @@ This is a GitHub template. To stand up a site for your school:
    - `src/site.config.ts` — `SITE`, categories, collections, scenarios.
    - `agents/verify.config.json` — your school name + domains (see recipe-verifier).
    - the map anchor constant `GREEN` in `src/pages/map.astro` (the campus center; rename freely).
+   - **Narrative copy to rewrite:** the hero/body prose in `src/pages/about.astro`,
+     `for-alumni.astro`, `for-students.astro`, `privacy.astro`, `terms.astro`, and the
+     `index.astro` hero + `map.astro` "Green" copy contain school-specific wording.
+     Titles, email placeholders, and the homepage school name are already wired to `SITE`;
+     the body paragraphs are not — rewrite them for your school.
 4. Run the generators: `npm run gen:schema` (DB constraint) and `npm run og` (social card).
 5. Apply `supabase/schema.sql` in the Supabase SQL editor, then `npm run seed`.
 6. `npm run test && npm run typecheck && npm run build`, then deploy.

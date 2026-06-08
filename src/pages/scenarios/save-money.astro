@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ResourceCard from '../../components/ResourceCard.astro';
 import ScenarioIcon from '../../components/ScenarioIcon.astro';
 import { loadResources } from '../../lib/catalog';
-import { SCENARIOS } from '../../site.config';
+import { SITE, SCENARIOS } from '../../site.config';
 
 // Resolve the catalog (Supabase with static JSON fallback), id = stable slug.
 const resources = await loadResources();
@@ -12,7 +12,7 @@ const resources = await loadResources();
 const scenarioResources = resources.filter(SCENARIOS['save-money'].match);
 ---
 
-<BaseLayout title="Save Money Resources | Free Stuff @ Dartmouth">
+<BaseLayout title={`Save Money Resources | ${SITE.name}`}>
   <div class="scenario-page">
     <div class="scenario-hero">
       <div class="scenario-icon-large"><ScenarioIcon slug="save-money" size={48} /></div>

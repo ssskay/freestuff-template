@@ -1,10 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ScenarioIcon from '../../components/ScenarioIcon.astro';
-import { SCENARIO_CARDS } from '../../site.config';
+import { SITE, SCENARIO_CARDS } from '../../site.config';
 ---
 
-<BaseLayout title="Scenarios | Free Stuff @ Dartmouth">
+<BaseLayout title={`Scenarios | ${SITE.name}`}>
   <div class="scenarios-page">
     <div class="scenarios-hero">
       <h1 class="page-title">Find what you need by situation</h1>

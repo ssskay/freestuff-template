@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { loadStaticResources } from '../lib/catalog';
 import { buildMapData } from '../lib/map-data';
-import { categoryLabel } from '../site.config';
+import { SITE, categoryLabel } from '../site.config';
 import buildingFootprints from '../content/building-footprints.json';
 
 const resources = await loadStaticResources();
@@ -18,7 +18,7 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
 ---
 
 <BaseLayout
-  title="Map | Free Stuff @ Dartmouth"
+  title={`Map | ${SITE.name}`}
   description="The campus is your backyard. An interactive map of free and affordable things to do around Dartmouth — and everything you can access from the Green."
 >
   <div class="map-page">

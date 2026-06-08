@@ -45,4 +45,4 @@ async function main(): Promise<void> {
   console.log(`og — wrote ${outPath} (${SITE.name}, ${accentHex})`);
 }
 
-if (process.argv[1] === fileURLToPath(import.meta.url)) main();
+if (process.argv[1] === fileURLToPath(import.meta.url)) main().catch((err) => { console.error(err); process.exitCode = 1; });

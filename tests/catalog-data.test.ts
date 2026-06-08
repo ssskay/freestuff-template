@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { CATEGORIES, ELIGIBILITY } from '../src/site.config';
+import { CATEGORIES, ELIGIBILITY, CAMPUS_BOUNDS } from '../src/site.config';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const resources = JSON.parse(
@@ -69,11 +69,8 @@ describe('resources.json data integrity', () => {
   });
 });
 
-// Hanover/Upper-Valley bounding box. Any pinned resource must fall inside it.
-const HANOVER_BOUNDS = { minLat: 43.69, maxLat: 43.72, minLng: -72.31, maxLng: -72.27 };
-
 describe('resources.json map invariants', () => {
-  it('every pinned resource has numeric lat+lng inside the Hanover box and a place', () => {
+  it('every pinned resource has numeric lat+lng inside the campus box and a place', () => {
     for (const r of resources) {
       const hasLat = r.lat !== undefined;
       const hasLng = r.lng !== undefined;
@@ -81,10 +78,10 @@ describe('resources.json map invariants', () => {
       if (!hasLat) continue;
       expect(typeof r.lat, `lat type on ${r.id}`).toBe('number');
       expect(typeof r.lng, `lng type on ${r.id}`).toBe('number');
-      expect(r.lat, `lat range on ${r.id}`).toBeGreaterThanOrEqual(HANOVER_BOUNDS.minLat);
-      expect(r.lat, `lat range on ${r.id}`).toBeLessThanOrEqual(HANOVER_BOUNDS.maxLat);
-      expect(r.lng, `lng range on ${r.id}`).toBeGreaterThanOrEqual(HANOVER_BOUNDS.minLng);
-      expect(r.lng, `lng range on ${r.id}`).toBeLessThanOrEqual(HANOVER_BOUNDS.maxLng);
+      expect(r.lat, `lat range on ${r.id}`).toBeGreaterThanOrEqual(CAMPUS_BOUNDS.minLat);
+      expect(r.lat, `lat range on ${r.id}`).toBeLessThanOrEqual(CAMPUS_BOUNDS.maxLat);
+      expect(r.lng, `lng range on ${r.id}`).toBeGreaterThanOrEqual(CAMPUS_BOUNDS.minLng);
+      expect(r.lng, `lng range on ${r.id}`).toBeLessThanOrEqual(CAMPUS_BOUNDS.maxLng);
       expect(r.place, `place required on pinned ${r.id}`).toBeTruthy();
     }
   });

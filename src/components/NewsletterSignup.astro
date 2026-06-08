@@ -1,4 +1,6 @@
 ---
+import { SITE } from '../site.config';
+
 interface Props {
   source?: string;
 }
@@ -21,7 +23,7 @@ const { source = 'home' } = Astro.props;
         id="newsletter-email"
         name="email"
         class="newsletter-input"
-        placeholder="you@dartmouth.edu"
+        placeholder={`you@${SITE.emailDomain}`}
         autocomplete="email"
         required
       />

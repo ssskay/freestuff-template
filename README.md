@@ -17,6 +17,7 @@ surface is a small set of **pack files**; everything else is the shared engine.
 | `src/site.config.ts` | name/branding, categories, collections, scenarios |
 | `agents/verify.config.json` | verifier school + domains + UA |
 | `GREEN` constant in `src/pages/map.astro` | map center |
+| narrative copy in `src/pages/*.astro` | school-specific body prose (titles already wired to SITE) |
 
 ## Generators
 - `npm run gen:schema` — regenerate the DB category CHECK from `CATEGORIES`.
