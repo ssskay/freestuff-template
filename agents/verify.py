@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
-Verifier Agent for Free Stuff @ Dartmouth
-Checks all entries in resources.json for broken links and content drift
+Link verifier agent — checks resources.json for broken links and content drift.
 """
 
 import json
@@ -153,7 +152,7 @@ Be strict but not pedantic. If the page is about the right service/perk but the 
 
 def find_replacement_url(resource: Dict[str, Any]) -> str | None:
     """
-    Try to find a replacement URL by searching Dartmouth subdomains
+    Try to find a replacement URL by searching the school's configured subdomains
     Returns: suggested_url or None
     """
     log(f"  Searching for replacement URL...")
