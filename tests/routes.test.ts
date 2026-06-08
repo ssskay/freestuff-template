@@ -56,9 +56,11 @@ describe('/map page', () => {
     expect(routeExists('/map')).toBe(true);
   });
 
-  it('renders the hero headline and an inline map-data blob', () => {
+  it('renders a config-driven hero and inline map data + config blobs', () => {
     const src = readFileSync(join(pagesDir, 'map.astro'), 'utf-8');
-    expect(src).toContain('The campus is your backyard');
+    // Hero copy and the anchor model are school config (MAP.*), not hardcoded here.
+    expect(src).toContain('MAP.title');
     expect(src).toContain('id="map-data"');
+    expect(src).toContain('id="map-config"');
   });
 });

@@ -2,32 +2,27 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { loadStaticResources } from '../lib/catalog';
 import { buildMapData } from '../lib/map-data';
-import { SITE, categoryLabel } from '../site.config';
+import { SITE, MAP, categoryLabel } from '../site.config';
 import buildingFootprints from '../content/building-footprints.json';
 
 const resources = await loadStaticResources();
 const mapData = buildMapData(resources);
 
-// Group the Green's resources by category for the readable text list.
-const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
+// Group the no-location ("available anywhere") resources by category for the
+// readable text list below the map.
+const anywhereByCategory = [...new Set(mapData.anywhere.map((r) => r.category))]
   .sort()
   .map((cat) => ({
     label: categoryLabel(cat),
-    resources: mapData.green.filter((r) => r.category === cat),
+    resources: mapData.anywhere.filter((r) => r.category === cat),
   }));
 ---
 
-<BaseLayout
-  title={`Map | ${SITE.name}`}
-  description="The campus is your backyard. An interactive map of free and affordable things to do around Dartmouth — and everything you can access from the Green."
->
+<BaseLayout title={`Map | ${SITE.name}`} description={MAP.description}>
   <div class="map-page">
     <div class="map-hero">
-      <h1 class="page-title">The campus is your backyard</h1>
-      <p class="page-deck">
-        Free movies, makerspaces, museums, gyms, the river, the free bus — and from a bench
-        on the Green, every online resource Dartmouth gives you. Get out there.
-      </p>
+      <h1 class="page-title">{MAP.title}</h1>
+      <p class="page-deck">{MAP.deck}</p>
     </div>
 
     <div class="map-layout">
@@ -52,11 +47,9 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
         ))}
       </ul>
 
-      <h2 class="map-list-title">From the Green — online &amp; access-anywhere</h2>
-      <p class="green-blurb">
-        Grab the free campus WiFi, sit on the grass, and from right here you have all of this:
-      </p>
-      {greenByCategory.map((g) => (
+      <h2 class="map-list-title">{MAP.anywhereHeading}</h2>
+      <p class="green-blurb">{MAP.anywhereBlurb}</p>
+      {anywhereByCategory.map((g) => (
         <div class="green-group">
           <h3 class="green-group-title">{g.label}</h3>
           <ul class="place-resources">
@@ -76,6 +69,9 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
 
   <!-- Map data for the client island. -->
   <script is:inline type="application/json" id="map-data" set:html={JSON.stringify(mapData)}></script>
+  <!-- Map model config (school-specific): initial center + optional "anywhere"
+       anchor marker. anchor === null → no anchor pin (urban/multi-campus schools). -->
+  <script is:inline type="application/json" id="map-config" set:html={JSON.stringify({ center: MAP.center, anchor: MAP.anchor })}></script>
   <!-- Real OSM building footprints, softly tinted under the pins to show which
        buildings these resources live in (see /tmp fetch in commit history). -->
   <script is:inline type="application/json" id="map-footprints" set:html={JSON.stringify(buildingFootprints)}></script>
@@ -86,14 +82,20 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
 
     type MapResource = { id: string; name: string; category: string; url: string; annual_value: number | null };
     type MapPlace = { place: string; lat: number; lng: number; resources: MapResource[] };
-    type MapData = { places: MapPlace[]; green: MapResource[] };
-
-    const GREEN: [number, number] = [43.7033, -72.2886];
+    type MapData = { places: MapPlace[]; anywhere: MapResource[] };
+    type MapAnchor = { lat: number; lng: number; label: string; glyph?: string; blurb: string };
+    type MapConfig = { center: [number, number]; anchor: MapAnchor | null };
 
     function readData(): MapData | null {
       const el = document.getElementById('map-data');
       if (!el?.textContent) return null;
       try { return JSON.parse(el.textContent) as MapData; } catch { return null; }
+    }
+
+    function readConfig(): MapConfig | null {
+      const el = document.getElementById('map-config');
+      if (!el?.textContent) return null;
+      try { return JSON.parse(el.textContent) as MapConfig; } catch { return null; }
     }
 
     // Escape catalog text before injecting it into popup HTML (names contain '&').
@@ -115,20 +117,21 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
       return `<div class="pc"><h3 class="pc-title">${esc(p.place)}</h3>${listHtml(p.resources)}</div>`;
     }
 
-    function greenHtml(green: MapResource[]): string {
+    function anchorHtml(anchor: MapAnchor, anywhere: MapResource[]): string {
       return (
-        `<div class="pc"><h3 class="pc-title">From the Green</h3>` +
-        `<p class="pc-lead">Grab the free campus WiFi, sit on the grass, and from right here you have access to all of this.</p>` +
-        `${listHtml(green)}</div>`
+        `<div class="pc"><h3 class="pc-title">${esc(anchor.label)}</h3>` +
+        `<p class="pc-lead">${esc(anchor.blurb)}</p>` +
+        `${listHtml(anywhere)}</div>`
       );
     }
 
     function init(): void {
       const data = readData();
+      const config = readConfig();
       const el = document.getElementById('map');
-      if (!data || !el) return;
+      if (!data || !config || !el) return;
 
-      const map = L.map(el, { scrollWheelZoom: false }).setView(GREEN, 15);
+      const map = L.map(el, { scrollWheelZoom: false }).setView(config.center, 15);
       L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
         maxZoom: 19,
@@ -151,7 +154,6 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
       }
 
       const placeIcon = L.divIcon({ className: 'pin pin-place', html: '<span></span>', iconSize: [26, 26], iconAnchor: [13, 13], popupAnchor: [0, -12] });
-      const greenIcon = L.divIcon({ className: 'pin pin-green', html: '<span>WiFi</span>', iconSize: [50, 50], iconAnchor: [25, 25], popupAnchor: [0, -22] });
       const popupOpts: L.PopupOptions = { maxHeight: 260, minWidth: 220, maxWidth: 300, className: 'map-popup' };
 
       // Popups open AT the pin and auto-pan into view — feedback lands where you
@@ -167,26 +169,35 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
         byPlace.set(p.place, m);
       }
 
-      L.marker(GREEN, { icon: greenIcon, keyboard: false, title: 'The Green', alt: 'The Dartmouth Green' })
-        .addTo(map)
-        .bindPopup(greenHtml(data.green), popupOpts);
+      // The "available anywhere" set only gets a pin if this school opts into a
+      // single anchor (config.anchor). Urban/multi-campus schools set anchor:null,
+      // and those resources live only in the accessible list below — no fake pin.
+      const framePoints: [number, number][] = data.places.map((p) => [p.lat, p.lng]);
+      if (config.anchor) {
+        const a = config.anchor;
+        const anchorIcon = L.divIcon({ className: 'pin pin-green', html: `<span>${esc(a.glyph ?? '★')}</span>`, iconSize: [50, 50], iconAnchor: [25, 25], popupAnchor: [0, -22] });
+        L.marker([a.lat, a.lng], { icon: anchorIcon, keyboard: false, title: a.label, alt: a.label })
+          .addTo(map)
+          .bindPopup(anchorHtml(a, data.anywhere), popupOpts);
+        framePoints.push([a.lat, a.lng]);
+      }
 
-      // Frame the view on the pinned campus core, not the empty outskirts — the
-      // fixed zoom-15 left every pin in a tiny central cluster. fitBounds picks
-      // the closest zoom that still shows every pin, adapting to any viewport.
-      const pinPoints: [number, number][] = data.places.map((p) => [p.lat, p.lng]);
-      pinPoints.push(GREEN);
-      const bounds = L.latLngBounds(pinPoints);
+      // Frame the view on the pinned campus core, not the empty outskirts.
+      // fitBounds picks the closest zoom that still shows every pin, adapting to
+      // any viewport. (No pins at all → keep the configured center/zoom.)
       const fitOpts: L.FitBoundsOptions = { padding: [36, 36], maxZoom: 17 };
-      map.fitBounds(bounds, fitOpts);
-      // fitBounds floors to the zoom that frames every pin with slack to spare,
-      // which reads as too much empty margin on a wide desktop frame. Tighten one
-      // notch to fill it — but only keep that if every pin still fits, since a
-      // narrow/short phone viewport crops the campus spread (Ledyard to athletics)
-      // at +1. Self-correcting: desktop gets the tighter frame, mobile keeps all pins.
-      map.setZoom(Math.min(map.getZoom() + 1, 17), { animate: false });
-      if (!pinPoints.every((pt) => map.getBounds().contains(pt))) {
+      if (framePoints.length) {
+        const bounds = L.latLngBounds(framePoints);
         map.fitBounds(bounds, fitOpts);
+        // fitBounds floors to the zoom that frames every pin with slack to spare,
+        // which reads as too much empty margin on a wide desktop frame. Tighten one
+        // notch to fill it — but only keep that if every pin still fits, since a
+        // narrow/short phone viewport crops the campus spread at +1. Self-correcting:
+        // desktop gets the tighter frame, mobile keeps all pins.
+        map.setZoom(Math.min(map.getZoom() + 1, 17), { animate: false });
+        if (!framePoints.every((pt) => map.getBounds().contains(pt))) {
+          map.fitBounds(bounds, fitOpts);
+        }
       }
 
       // The accessible text-list buttons pan to and open the matching pin's popup.

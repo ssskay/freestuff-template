@@ -14,9 +14,9 @@ function res(partial: Partial<Resource>): Resource {
 }
 
 describe('buildMapData', () => {
-  it('routes resources without coordinates to the Green', () => {
+  it('routes resources without coordinates to the anywhere set', () => {
     const data = buildMapData([res({ id: 'm365', name: 'Microsoft 365' })]);
-    expect(data.green.map((r) => r.id)).toEqual(['m365']);
+    expect(data.anywhere.map((r) => r.id)).toEqual(['m365']);
     expect(data.places).toEqual([]);
   });
 
@@ -38,23 +38,23 @@ describe('buildMapData', () => {
       res({ id: 'dead', name: 'Dead', is_active: false }),
     ]);
     expect(data.places.map((p) => p.place).sort()).toEqual(['Alumni Gym', 'Hood Museum of Art']);
-    expect(data.green).toEqual([]);
+    expect(data.anywhere).toEqual([]);
   });
 
   it('emits only the trimmed fields the map needs', () => {
     const data = buildMapData([res({ id: 'm365', name: 'Microsoft 365', annual_value: 70 })]);
-    expect(data.green[0]).toEqual({ id: 'm365', name: 'Microsoft 365', category: 'software', url: 'https://e.com', annual_value: 70 });
+    expect(data.anywhere[0]).toEqual({ id: 'm365', name: 'Microsoft 365', category: 'software', url: 'https://e.com', annual_value: 70 });
   });
 
-  it('routes a resource with coordinates but no place to the Green', () => {
+  it('routes a resource with coordinates but no place to the anywhere set', () => {
     const data = buildMapData([res({ id: 'orphan', name: 'Orphan', lat: 43.7035, lng: -72.2876, place: null })]);
     expect(data.places).toEqual([]);
-    expect(data.green.map((r) => r.id)).toEqual(['orphan']);
+    expect(data.anywhere.map((r) => r.id)).toEqual(['orphan']);
   });
 
-  it('routes a resource with a place but no coordinates to the Green', () => {
+  it('routes a resource with a place but no coordinates to the anywhere set', () => {
     const data = buildMapData([res({ id: 'noloc', name: 'No Loc', place: 'Hopkins Center' })]);
     expect(data.places).toEqual([]);
-    expect(data.green.map((r) => r.id)).toEqual(['noloc']);
+    expect(data.anywhere.map((r) => r.id)).toEqual(['noloc']);
   });
 });

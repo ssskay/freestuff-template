@@ -3,17 +3,19 @@
  *
  * Everything that another school would need to change to fork this site lives
  * here: branding, the category taxonomy, eligibility options, the curated
- * homepage collections, and the scenario filters. Pages and the data layer read
- * from this module rather than hardcoding values inline.
+ * homepage collections, the scenario filters, and the map model. Pages and the
+ * data layer read from this module rather than hardcoding values inline.
  */
 
 /**
  * PACK FILES (the full per-school edit surface — see recipes/recipe-fork.md):
  *   src/content/resources.json, src/content/building-footprints.json,
  *   public/tokens.css (--color-accent), public/og.png (generated),
- *   this file (SITE + taxonomy + collections + scenarios),
- *   agents/verify.config.json, and the `GREEN` anchor constant in src/pages/map.astro.
- * Everything else is shared engine — do not edit it in a fork; send changes upstream.
+ *   this file (SITE + MAP + taxonomy + collections + scenarios),
+ *   agents/verify.config.json.
+ * The map's anchor/center/copy live in MAP below (no longer a constant in
+ * map.astro). Everything else is shared engine — do not edit it in a fork; send
+ * changes upstream.
  */
 
 import type { Resource } from './lib/catalog';
@@ -35,6 +37,40 @@ export const SITE = {
  * test asserts every pin is inside it. Pack value: set to your campus's box.
  */
 export const CAMPUS_BOUNDS = { minLat: 43.69, maxLat: 43.72, minLng: -72.31, maxLng: -72.27 } as const;
+
+/**
+ * The campus map model. Two shapes a school can take:
+ *  - Single-anchor (Dartmouth's Green, below): one central marker that holds every
+ *    "available anywhere" resource — the "from one bench, all the WiFi" conceit.
+ *    Set `anchor` to that point + its copy.
+ *  - No anchor (an urban / multi-campus school): set `anchor: null`. Online
+ *    resources then carry no fake pin; they appear under `anywhereHeading` instead,
+ *    and the map frames purely on the real building pins.
+ */
+export const MAP = {
+  /** Map page hero. */
+  title: 'The campus is your backyard',
+  deck: 'Free movies, makerspaces, museums, gyms, the river, the free bus — and from a bench on the Green, every online resource Dartmouth gives you. Get out there.',
+  description:
+    'The campus is your backyard. An interactive map of free and affordable things to do around Dartmouth — and everything you can access from the Green.',
+  /** Initial view + framing fallback. */
+  center: [43.7033, -72.2886] as [number, number],
+  /**
+   * Optional single "available anywhere" anchor marker. null = no anchor pin.
+   * Dartmouth anchors all online resources on the Green (sit on the grass, grab
+   * the WiFi). An urban campus would set this to null.
+   */
+  anchor: {
+    lat: 43.7033,
+    lng: -72.2886,
+    label: 'The Green',
+    glyph: 'WiFi',
+    blurb: 'Grab the free campus WiFi, sit on the grass, and from right here you have access to all of this.',
+  } as { lat: number; lng: number; label: string; glyph?: string; blurb: string } | null,
+  /** Heading + lead for the no-coordinates ("available anywhere") resource list. */
+  anywhereHeading: 'From the Green — online & access-anywhere',
+  anywhereBlurb: 'Grab the free campus WiFi, sit on the grass, and from right here you have all of this:',
+} as const;
 
 /** Allowed resource categories. Mirrors the DB category constraint. */
 export const CATEGORIES = [
