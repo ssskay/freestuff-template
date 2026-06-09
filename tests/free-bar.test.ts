@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'fs';
+import { readFileSync, readdirSync } from 'fs';
 import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { dirname, join, relative } from 'path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const resources = JSON.parse(
@@ -47,5 +47,54 @@ describe('every listing clears the free bar', () => {
         lies.push(`${r.id}: annual_value 0 but text names a paid membership`);
     }
     expect(lies, lies.join('\n')).toEqual([]);
+  });
+});
+
+// The free bar applies to MARKETING PROSE too, not just catalog entries. Removing
+// a not-free entry once left scenario copy still promoting it as "free or cheap" —
+// a trust violation the JSON-only scan never saw. Scan the rendered page/config
+// copy for phrases that conflate "free" with "actually costs money".
+function astroFiles(dir: string): string[] {
+  const out: string[] = [];
+  for (const e of readdirSync(dir, { withFileTypes: true })) {
+    const p = join(dir, e.name);
+    if (e.isDirectory()) out.push(...astroFiles(p));
+    else if (e.name.endsWith('.astro')) out.push(p);
+  }
+  return out;
+}
+
+const PROSE_FILES = [
+  ...astroFiles(join(__dirname, '../src/pages')),
+  join(__dirname, '../src/site.config.ts'),
+];
+
+// Unambiguous "free but not really" tells. Plain "discount"/"$" are allowed in
+// prose (a page may honestly describe a paid upgrade), so they are NOT gated here.
+const BAD_PROSE = [/free or cheap/i, /free or discounted/i, /free-ish/i, /free\(ish\)/i];
+
+describe('no copy conflates free with cheap/discounted', () => {
+  it('no scenario/page/config prose says "free or cheap" and similar', () => {
+    const hits: string[] = [];
+    for (const f of PROSE_FILES) {
+      const text = readFileSync(f, 'utf-8');
+      for (const rx of BAD_PROSE) {
+        const m = text.match(rx);
+        if (m) hits.push(`${relative(join(__dirname, '..'), f)}: "${m[0]}"`);
+      }
+    }
+    expect(hits, `trust-violating prose:\n  ${hits.join('\n  ')}`).toEqual([]);
+  });
+
+  it('no catalog entry text says "free or cheap" and similar', () => {
+    const hits: string[] = [];
+    for (const r of resources) {
+      const text = blob(r);
+      for (const rx of BAD_PROSE) {
+        const m = text.match(rx);
+        if (m) hits.push(`${r.id}: "${m[0]}"`);
+      }
+    }
+    expect(hits, `trust-violating entry copy:\n  ${hits.join('\n  ')}`).toEqual([]);
   });
 });

@@ -17,7 +17,13 @@ import re
 import sys
 from pathlib import Path
 
-RESOURCES = Path(__file__).resolve().parent.parent / "src" / "content" / "resources.json"
+ROOT = Path(__file__).resolve().parent.parent
+RESOURCES = ROOT / "src" / "content" / "resources.json"
+
+# Marketing prose (scenario pages, homepage blurbs, config copy) must clear the
+# bar too — removing a not-free entry once left copy still calling it "free or
+# cheap". Plain "$"/"discount" are allowed in prose (honest paid-upgrade mentions).
+BAD_PROSE = re.compile(r"free or cheap|free or discounted|free-ish|free\(ish\)", re.I)
 
 # Pay-to-obtain — keep in lockstep with tests/free-bar.test.ts.
 LETHAL = [
@@ -73,8 +79,27 @@ def main():
         for r, m, t in review:
             print(f"  • {r['id']} [{r.get('category')}]: {context(t, m)}")
 
-    print(f"\n{len(entries)} entries · {len(lethal)} lethal · {len(review)} to review")
-    return 1 if lethal else 0
+    # Scan marketing prose for free/cheap conflation.
+    prose = []
+    prose_files = list((ROOT / "src" / "pages").rglob("*.astro"))
+    cfg = ROOT / "src" / "site.config.ts"
+    if cfg.exists():
+        prose_files.append(cfg)
+    for f in prose_files:
+        text = f.read_text()
+        for m in BAD_PROSE.finditer(text):
+            prose.append(f"{f.relative_to(ROOT)}: \"{m.group(0)}\"")
+    for r in entries:
+        for m in BAD_PROSE.finditer(text_of(r)):
+            prose.append(f"{r['id']} (catalog): \"{m.group(0)}\"")
+    if prose:
+        print(f"\n❌ PROSE — copy conflates free with not-free ({len(prose)}):")
+        for p in prose:
+            print(f"  • {p}")
+
+    bad = len(lethal) + len(prose)
+    print(f"\n{len(entries)} entries · {len(lethal)} lethal · {len(review)} to review · {len(prose)} prose")
+    return 1 if bad else 0
 
 
 if __name__ == "__main__":
