@@ -1,5 +1,6 @@
 ---
 import Analytics from '@vercel/analytics/astro';
+import SpeedInsights from '@vercel/speed-insights/astro';
 import { SITE } from '../site.config';
 
 interface Props {
@@ -92,6 +93,7 @@ const imageURL = new URL(image, siteOrigin);
 
     <!-- Cookieless, privacy-friendly aggregate analytics (see /privacy) -->
     <Analytics />
+    <SpeedInsights />
 
     <style>
       /* Nav: N7 Inline + Wordmark */
