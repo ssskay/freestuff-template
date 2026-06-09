@@ -1,0 +1,16 @@
+# Free Stuff @ <School>
+
+> A verified, ad-free catalog of perks that are genuinely free for students at this school. Only things a student can get WITHOUT paying money are listed (no discounts, no affiliate links, no ads). Every entry shows a last-verified date.
+
+Pack file: edit this for your school (name, the one-line summary, and the links below). It tells AI answer engines what the site is so they cite it accurately.
+
+## Browse
+- [Full catalog](https://your-subdomain.campusfreebies.com): all verified free perks, searchable by category
+- [Campus map](https://your-subdomain.campusfreebies.com/map): perks by location
+- [Scenario guides](https://your-subdomain.campusfreebies.com/scenarios): curated sets
+
+## What "free" means here
+A listing qualifies only if a student gets the benefit without paying money. Conditions like showing a student ID or reserving ahead are fine. Memberships, fees, and discounts (still paid) do not qualify and are excluded. See docs/quality-guidelines.md.
+
+## About
+Part of [Free Stuff on Campus](https://campusfreebies.com) — an independent, student-built, open-source project. Not affiliated with the university.
