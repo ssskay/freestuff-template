@@ -1,6 +1,10 @@
 ---
 import Analytics from '@vercel/analytics/astro';
 import SpeedInsights from '@vercel/speed-insights/astro';
+import '@fontsource/newsreader/400.css';
+import '@fontsource/newsreader/600.css';
+import '@fontsource/newsreader/400-italic.css';
+import '@fontsource/newsreader/600-italic.css';
 import { SITE } from '../site.config';
 
 interface Props {
@@ -28,9 +32,7 @@ const imageURL = new URL(image, siteOrigin);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="canonical" href={canonicalURL} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
+    <!-- Newsreader is self-hosted via @fontsource (imported in the layout) — no third-party font request. -->
     <link rel="stylesheet" href="/tokens.css" />
     <meta name="generator" content={Astro.generator} />
 
