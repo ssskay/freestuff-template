@@ -1,0 +1,150 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../site.config';
+
+// One source of truth: rendered to the accordion below and to FAQPage JSON-LD
+// for search + AI answer engines. School-agnostic via SITE (engine page).
+const faqs: { q: string; a: string }[] = [
+  {
+    q: `Is everything on ${SITE.name} actually free, or are these student discounts?`,
+    a: `Actually free. A perk only earns a spot if a ${SITE.school} student can get it without paying money — free software, transit, gear, library databases, grants, and more. Discounts do not qualify: a discount is still something you pay for. If part of something is free and part is paid, the listing leads with the free part and names the paid part.`,
+  },
+  {
+    q: 'How is this different from UNiDAYS, Student Beans, or other student-discount sites?',
+    a: `Those are discount marketplaces — brands pay them to put deals in front of students, so the listings are advertising. This is the opposite: it lists things that are already free for you, nobody pays to be included, and there are no ads or affiliate links. Every entry is verified with a date so you can trust it.`,
+  },
+  {
+    q: 'What counts as "free"?',
+    a: `No payment, ever, to get the core benefit. Conditions like showing your student ID, reserving ahead, or limited hours are fine — those are still free. Credits given to you (a free printing quota, a stipend, a grant) count too, because you receive them rather than pay them. Anything that needs a membership fee, a purchase, or a discounted-but-still-paid price does not.`,
+  },
+  {
+    q: 'How do you keep the listings accurate?',
+    a: `Every entry shows a last-verified date in the open. A verification routine re-checks links and flags entries going stale, and a written rule set keeps not-free things and discounts out. Real-world perks still change, so if you spot something wrong, report it and it gets fixed.`,
+  },
+  {
+    q: 'Who can use these perks?',
+    a: `Mostly currently enrolled ${SITE.school} students — but many perks also cover faculty, staff, or alumni. Each listing has an eligibility tag, and the official page it links to is the final word. Check before you go.`,
+  },
+  {
+    q: `Are you affiliated with ${SITE.school}?`,
+    a: `No. This is an independent, student-built, open-source project — not affiliated with, endorsed by, or an official site of ${SITE.school}. Always confirm access details on the official pages each listing links to.`,
+  },
+  {
+    q: 'How do I report a broken link or a perk that should be added?',
+    a: `Please do — corrections are the point. Use the Submit page, or open an issue on the project's GitHub. The faster something wrong gets flagged, the more the whole list stays worth trusting.`,
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const title = `FAQ | ${SITE.name}`;
+const description = `What counts as free at ${SITE.school}, how this differs from student-discount sites, and how the catalog stays accurate.`;
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="faq-page">
+    <h1 class="faq-title">Frequently asked questions</h1>
+    <p class="faq-lede">Short answers to what people ask most — what's actually free, how it's different from discount sites, and how it stays honest.</p>
+
+    <div class="faq-list">
+      {faqs.map((f) => (
+        <details class="faq-item">
+          <summary class="faq-q">{f.q}</summary>
+          <p class="faq-a">{f.a}</p>
+        </details>
+      ))}
+    </div>
+
+    <p class="faq-foot">
+      Still stuck? <a href="/submit" class="inline-link">Submit a perk or correction</a>, or browse the
+      <a href="/" class="inline-link">full catalog</a>.
+    </p>
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </article>
+</BaseLayout>
+
+<style>
+  .faq-page {
+    max-width: var(--measure);
+    margin: 0 auto;
+    padding: var(--space-3xl) var(--space-lg) var(--space-2xl);
+  }
+  .faq-title {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--text-5xl);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+    color: var(--color-ink);
+    margin: 0 0 var(--space-md) 0;
+  }
+  .faq-lede {
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-ink-muted);
+    margin: 0 0 var(--space-2xl) 0;
+  }
+  .faq-list {
+    border-top: var(--rule-thin) solid var(--color-border);
+  }
+  .faq-item {
+    border-bottom: var(--rule-thin) solid var(--color-border);
+    padding: var(--space-md) 0;
+  }
+  .faq-q {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-ink);
+    cursor: pointer;
+    list-style: none;
+    position: relative;
+    padding-right: var(--space-lg);
+    line-height: var(--leading-snug);
+  }
+  .faq-q::-webkit-details-marker { display: none; }
+  .faq-q::after {
+    content: '+';
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: var(--color-accent);
+    font-weight: 400;
+    font-size: var(--text-xl);
+    line-height: 1;
+  }
+  .faq-item[open] .faq-q::after { content: '\2013'; }
+  .faq-a {
+    margin: var(--space-sm) 0 0;
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-ink-muted);
+  }
+  .faq-foot {
+    margin-top: var(--space-2xl);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-ink-muted);
+  }
+  .inline-link {
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .inline-link:hover { color: var(--color-accent-hover); text-decoration: underline; }
+
+  @media (max-width: 768px) {
+    .faq-page { padding: var(--space-2xl) var(--space-md) var(--space-xl); }
+    .faq-title { font-size: var(--text-4xl); }
+  }
+</style>
