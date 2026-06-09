@@ -18,6 +18,21 @@ permissions:
   pull-requests: write
 
 jobs:
+  # Keyless: catch dead links + stale entries every week with no API key and no
+  # cost. Non-fatal (|| true) so it never turns the weekly run red — the report
+  # lands in the run summary and broken links surface as inline annotations.
+  freshness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check links + staleness (no API key)
+        run: |
+          python3 agents/freshness_check.py || true
+          cat freshness-report.md >> "$GITHUB_STEP_SUMMARY"
+
   verify:
     runs-on: ubuntu-latest
     steps:

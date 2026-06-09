@@ -39,3 +39,4 @@ __pycache__/
 
 # Construct telemetry (local-only, not part of the template)
 .cx/
+freshness-report.md
