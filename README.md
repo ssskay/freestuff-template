@@ -52,3 +52,7 @@ Everything else is the shared engine. Full walkthrough: [`recipes/recipe-fork.md
 
 ## Develop
 `npm ci && npm run dev`. Test: `npm run test`. Typecheck: `npm run typecheck`.
+
+---
+
+Maintained by [Sara Kay](https://sarakay.me) · [@ssskay](https://github.com/ssskay) · [more projects](https://sarakay.me/projects.html)
